@@ -14,8 +14,8 @@ Time: TBD
 2. Account Abstraction (AA)
 - What is AA?
 - How AA works?
-- What is pay master?
-- How pay master works?
+- What is paymaster?
+- How paymaster works?
 
 3. Toolings
 - How zkSync differs from Ethereum?
@@ -29,7 +29,6 @@ Time: TBD
 - Community devtools: 
 
 4. Milestone 1: deploy smart contract on zkSync Era
-- 
 - Deploy a ERC20 smart contract with remix/hardhat/foundry, with focus on foundry.
 - Deploy NFT (ERC721) contract with remix/hardhat/foundry, with focus on foundry.
 - Use zkSync CLI to interact with contracts.
@@ -39,8 +38,8 @@ Time: TBD
 - viem
 - wagmi
 
-6. Milestone 2: build a minimal App on zkSync Era
-- Build a NFT minting page
+6. Milestone 2: build a DApp on zkSync Era
+- Build a custom paymaster that covers gas fees for a user *only* if he/she holds a certain token/NFT.
 
 Extensions:
 - SDKs.
