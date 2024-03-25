@@ -1,9 +1,11 @@
 ---
 title: 1. Layer 2 基础
 tags:
-  - solidity
-  - basic
-  - wtfacademy
+  - ethereum
+  - layer 2
+  - rollup
+  - zk
+  - zksync
 ---
 
 # WTF zkSync极简入门: 1. Layer 2 基础
