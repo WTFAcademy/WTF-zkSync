@@ -22,6 +22,7 @@ Community: [Discord](https://discord.gg/5akcruXrsk)
 
 **第6讲：合约测试**
 
-**第7讲：Dapp开发**
+**第7讲：Dapp开发: NFT铸造**
 
+**第8讲：Dapp开发: Pay Master**
 
