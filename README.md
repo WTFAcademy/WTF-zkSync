@@ -26,3 +26,8 @@ Community: [Discord](https://discord.gg/5akcruXrsk)
 
 **第8讲：Dapp开发: Pay Master**
 
+## Reference
+
+1. [zkSync Doc](https://docs.zksync.io)
+
+2. Universal Mental Model for L2s by Coogan
