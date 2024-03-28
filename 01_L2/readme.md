@@ -116,7 +116,7 @@ ZK-Rollup早期为人诟病的地方是不能兼容 EVM，不能支持智能合�
 
 ![](./img/1-2.png)
 
-​                                                                                                 Credit:Zhangye@scroll
+ <p align="center">Credit:Zhangye@scroll</p>
 
 由于 zkEVM 并没有统一的设计标准，所以每个项目方基于不同角度在兼容 EVM 和支持 ZK 之间权衡设计出各自方案，目前基本分为两种思路：
 
