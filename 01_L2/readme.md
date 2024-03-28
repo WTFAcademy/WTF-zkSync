@@ -89,7 +89,7 @@ zk Rollup 是基于零知识证明的Layer2扩容方案，采用有效性验证�
 
 ## 3. 零知识证明
 
-**零知识证明(zero-knowledge proof)，简写为 ZKP**，最初由 S.Goldwasser、S.Micali 及 C.Rackoff 在 1985 年的论文《交互证明系统的知识复杂性》提出，**指的是证明者能够在不向验证者提供任何有用信息的情况下，使验证者相信某个论断是正确的。**
+**零知识证明(zero-knowledge proof)，简写为 ZKP**，最初由 S.Goldwasser、S.Micali 及 C.Rackoff 在 1985 年的论文[《交互证明系统的知识复杂性》](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Proof%20Systems/The_Knowledge_Complexity_Of_Interactive_Proof_Systems.pdf)提出，**指的是证明者能够在不向验证者提供任何有用信息的情况下，使验证者相信某个论断是正确的。**
 
 **性质**
 
@@ -129,7 +129,7 @@ ZK-Rollup早期为人诟病的地方是不能兼容 EVM，不能支持智能合�
 
 第一种思路更灵活，工作量更小，但需要花费额外精力在适配上；第二种思路工作量相对来说会大一些，但是兼容性更好，安全性更高。
 
-在 Vitalik 的博文中，他将 zkEVM 分为几种类型。其中，类型 1 是直接在以太坊上面直接开发 zkEVM，这个开发过于复杂而且目前效率太低，以太坊基金正在研究中。类型 2、类型 2.5 和类型 3 是 EVM 等效的 zkEVM，Scroll 和 Polygon Hermez 目前处于类型 3 这个阶段，朝着类型 2.5 乃至类型 2 努力。类型 4 是高级语言兼容的 zkEVM，包括 zkSync 和 Starknet。这些类型并无好坏之分，而且 zkEVM 也没有统一的标准。
+在 [Vitalik 的博文](https://vitalik.eth.limo/general/2022/08/04/zkevm.html)中，他将 zkEVM 分为几种类型。其中，类型 1 是直接在以太坊上面直接开发 zkEVM，这个开发过于复杂而且目前效率太低，以太坊基金正在研究中。类型 2、类型 2.5 和类型 3 是 EVM 等效的 zkEVM，Scroll 和 Polygon Hermez 目前处于类型 3 这个阶段，朝着类型 2.5 乃至类型 2 努力。类型 4 是高级语言兼容的 zkEVM，包括 zkSync 和 Starknet。这些类型并无好坏之分，而且 zkEVM 也没有统一的标准。
 
 ![](./img/1-3.png)
 
