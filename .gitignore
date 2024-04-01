@@ -3,3 +3,4 @@ node_modules
 .DS_Store
 .ipynb_checkpoints
 test
+.idea

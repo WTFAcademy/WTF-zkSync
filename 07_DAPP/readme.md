@@ -381,12 +381,37 @@
             ```
             
     - **useNFT**
-        
-        TODO
-            
+      - NFT合约中我们需要完成NFT持有数量查询，mint NFT逻辑，同时mint时，我们集成了paymaster的支付手段，首先我们需要关注的是我们采用的是zksync-ethers的`Contract`和`Web3Provider` 这是官方扩展的类，里面涉及了抽象账户，Paymaster逻辑等zksync独特的功能，我们这边需要用到paymaster，故我们不能直接采用ethers里面构建合约；其次我们在调用合约的时候传入`customData`即可，这里我们在前面`usePaymaster`中已经提及，这是调用paymaster的关键
+
+      ```jsx
+      
+      // 截取代码组合，不可运行
+      import { Contract, Web3Provider } from "zksync-ethers";
+      import { ethers } from "ethers";
+      
+      const contract = useMemo(() => {
+           if (!isConnected) return null;
+           const ethersProvider = new Web3Provider(walletProvider!)
+           const signer = ethersProvider.getSigner();
+           return new Contract(NFT_ADDRESS, NFT_ABI, signer);
+      }, [isConnected, address])
+      
+      async () => {
+        if (!contract) return null;
+        const tx = await contract.mint(address, "Space Stone", {
+            customData: canNonGas ? customData : undefined
+        });
+        await tx.wait();
+        return tx;
+      }
+      ```
+
+
+
+
 4. 前面我们已经完了所有合约交互相关的核心逻辑，接下来我们要把他们运用到页面中，让我们的页面更加完善，我们需完成一下内容，样式部分我已经在模版中完成，只需要使用hooks填充数据即可：
     - 打开`app/(main)/step-mint.tsx` 完成初始数据加载
-        
+           
         ```jsx
         const StepMint = () => {
             const { paymasterBalance } = usePaymaster();
