@@ -405,7 +405,62 @@
         return tx;
       }
       ```
+      - 将其完善到hook中：
 
+      ```jsx
+      const useNft = () => {
+          const { isConnected, address } = useWeb3ModalAccount()
+          const { walletProvider } = useWeb3ModalProvider()
+      
+          const { canNonGas } = useToken();
+          const { customData } = usePaymaster();
+      
+          const contract = useMemo(() => {
+              if (!isConnected) return null;
+      
+              const ethersProvider = new Web3Provider(walletProvider!)
+              const signer = ethersProvider.getSigner();
+              return new Contract(NFT_ADDRESS, NFT_ABI, signer);
+          }, [isConnected, address])
+      
+          const { data: nftBalance, refetch } = useQuery(["nftBalance", address], async () => {
+              if (!contract) return null;
+              const balance = await contract.balanceOf(address);
+              return balance.toString();
+          }, {
+              enabled: isConnected,
+              refetchInterval: 0
+          })
+      
+          const {
+              data: mintTx,
+              isLoading: isMintLoading,
+              mutateAsync: mint
+          } = useMutation(["mintNft", address], async () => {
+              if (!contract) return null;
+              const tx = await contract.mint(address, "Space Stone", {
+                  customData: canNonGas ? customData : undefined
+              });
+              await tx.wait();
+              return tx;
+          }, {
+              onSuccess: () => {
+                  toast.success("NFT minted successfully");
+                  refetch();
+              },
+              onError: (err: any) => {
+                  toast.error(err.message);
+              }
+          })
+      
+          return {
+              nftBalance,
+              mintTx,
+              isMintLoading,
+              mint,
+          }
+      }
+      ```
 
 
 
