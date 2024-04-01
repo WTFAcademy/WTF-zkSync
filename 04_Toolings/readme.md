@@ -115,17 +115,21 @@ zkSync 的原生抽象账户和以太坊的 EIP4337 都旨在增强账户的灵�
 
 #### 2.3 zkSync CLI
 
-**zkSync CLI** ( https://github.com/matter-labs/zksync-cli ) 是一个用于简化 zkSync 开发与交互的命令行工具。它提供了诸如管理本地开发环境、与合约交互、管理代币等功能的命令。
+**zkSync CLI** ( https://github.com/matter-labs/zksync-cli ) 是一个用于简化 zkSync 开发与交互的命令行工具。它提供了诸如管理本地开发环境、与合约交互、管理代币等功能的命令。它包含以下命令及对应功能：
 
-##### 2.3.1 所需环境
+##### 2.3.1 dev
 
-- [nodejs@18 及以上]( https://nodejs.org/en )
+用于管理本地开发环境
 
-- [Git]( https://git-scm.com/downloads )
+- 所需环境
+  
+  - [nodejs@18 及以上]( https://nodejs.org/en )
+  
+  - [Git]( https://git-scm.com/downloads )
+  
+  - [Docker](https://www.docker.com/get-started/)
 
-- [Docker](https://www.docker.com/get-started/)
-
-##### 2.3.2 使用
+- 使用
 
 ```
 npx zksync-cli dev start
@@ -146,6 +150,30 @@ npx zksync-cli dev start
   - Block Explorer：添加 zkSync 区块链浏览器 UI 和 API 相关功能。
 
 > 后续演示环境：`In memory node` 且 `不安装附加模块`。
+
+##### 2.3.2 config
+
+用于配置自定义链。
+
+##### 2.3.3 contract
+
+用于操作链上合约（读、写等）。
+
+##### 2.3.4 transaction
+
+用于查询链上交易信息（交易状态、转账金额、gas 费用等）。
+
+##### 2.3.5 create
+
+用于快速创建项目（前端、智能合约和脚本）。
+
+##### 2.3.6 wallet
+
+用于管理与钱包相关的功能（转账、余额查询等）。
+
+##### 2.3.7 bridge
+
+用于处理以太网和 zkSync 之间跨链操作。
 
 #### 2.4 zkSync Remix
 
