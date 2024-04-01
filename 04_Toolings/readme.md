@@ -19,7 +19,7 @@ tags:
 
 ### 1. 与以太坊的区别
 
-zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合约，并坚守严格的安全标准，从而极大程度地降低了重复进行安全审计的必要性。然而，我们仍需认识到以下几点存在的差异。
+zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合约，并维持高安全标准，从而减少了重复进行安全审计的需求。但是，我们还是需要了解以下差异。
 
 #### 1.1 EVM 指令
 
@@ -69,15 +69,15 @@ zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合
 
 #### 1.2 Nonces
 
-- zkSync 引入了两种不同的 Nonce：`交易 Nonce` 和 `部署 Nonce`。交易 Nonce 用于交易验证，而部署 Nonce 在合约部署时增加。这样，账户可以通过仅跟随一个 Nonce 值发送多个交易，而合约可以部署许多其他合约而不会与交易 Nonce 冲突。
+- zkSync 引入了两种不同的 Nonce：`交易 Nonce` 和 `部署 Nonce`。交易 Nonce 主要是用于验证交易的唯一性和顺序，确保交易不会被重复执行或篡改。而部署 Nonce 则在合约部署时递增，用以区分和标识每一次的合约部署操作。通过这种机制，账户能够连续发送多个交易，仅需关注并遵循单一的 Nonce 值。同时，合约能够部署多个其他合约，而不会与交易的 Nonce 发生混淆或冲突，从而确保了交易和合约部署的有序性和安全性。
 
-- 新创建的合约在 zkSync 中的部署 Nonce 值为 0，而在以太坊中，根据 EIP161 规范，新创建的合约的 Nonce 从 1 开始。
+- 在 zkSync 中，新创建的合约起始部署 Nonce 值设定为0，而在以太坊生态系统中，遵循 EIP161 规范，新部署的合约的 Nonce 起始值则是从1开始计算。
 
-- 在 zkSync 中，仅在部署成功时才会增加部署 Nonce。而在以太坊中，即使创建失败，部署时 Nonce 也会更新。
+- 在 zkSync 中，部署 Nonce 仅在合约部署成功时才会进行递增。然而，在以太坊中，即使合约创建操作未能成功，部署时的 Nonce 值依然会进行更新。
 
 #### 1.3 库
 
-- **库内联依赖 solc 优化器**：zkSync 依赖 solc 优化器进行库内联。只有在优化器内联了库时，库才能在不部署的情况下使用
+- **库内联依赖 solc 优化器**：zkSync 依赖 solc 优化器进行库内联。只有当优化器成功地将库进行内联处理后，库才能够在未进行单独部署的情况下得以运用。
 
 - **部署的库地址需在项目配置中设置**
 
@@ -93,11 +93,11 @@ zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合
 
 zkSync 的原生抽象账户和以太坊的 EIP4337 都旨在增强账户的灵活性和用户体验，但他们也有一些不同的地方：
 
-- **实现**：zkSync 的抽象账户集成在协议层面。
+- **实现**：zkSync 的抽象账户集成在协议层面。而 EIP4337 则避免了在协议层面实施。
 
-- **账户类型**：在 zkSync 中智能合约账户和普通账户都是 `first-class citizens`。
+- **账户类型**：在 zkSync 中智能合约账户和基础账户都是 first-class citizens。
 
-- **交易处理**：zkSync Era 对来自外部账户（EOAs）和智能合约账户的交易统一使用一个内存池。
+- **交易处理**：zkSync Era 使用统一的内存池来处理基础账户（EOA）和智能合约账户的交易。
 
 ### 2. 生态&工具
 
@@ -105,7 +105,9 @@ zkSync 的原生抽象账户和以太坊的 EIP4337 都旨在增强账户的灵�
 
 **zkSync Era Block Explorer** ( https://explorer.zksync.io/ )
 
-zkSync Era Block Explorer 提供 zkSync 网络上所有交易、区块、合约等信息。
+`zkSync Era Block Explorer` 提供 zkSync 网络上所有交易、区块、合约等信息。可以在右上角下拉菜单中进行不同网络切换。
+
+![区块链浏览器](./img/zkExplorer.png)
 
 #### 2.2 zkSync 水龙头
 
@@ -113,7 +115,7 @@ zkSync Era Block Explorer 提供 zkSync 网络上所有交易、区块、合约�
 
 #### 2.3 zkSync CLI
 
-**zkSync CLI** ( https://github.com/matter-labs/zksync-cli ) 是一个用于简化 zkSync 开发与交互的命令行工具。它提供了诸如管理本地开发环境、与合约交互、管理令牌等功能的命令。
+**zkSync CLI** ( https://github.com/matter-labs/zksync-cli ) 是一个用于简化 zkSync 开发与交互的命令行工具。它提供了诸如管理本地开发环境、与合约交互、管理代币等功能的命令。
 
 ##### 2.3.1 所需环境
 
@@ -222,6 +224,14 @@ const ethProvider = ethers.getDefaultProvider("sepolia"); // Sepolia testnet (L1
 
 #### 2.9 垮链桥
 
-[zkSync Bridge | Transfer funds between zkSync and Ethereum](https://portal.zksync.io/bridge/)
+- [zkSync Bridge](https://portal.zksync.io/bridge/)
+
+- [Omnibtc Finance](https://www.omnibtc.finance/)
+
+- [Orbiter Finance](https://www.orbiter.finance/?source=Ethereum&dest=zkSync%20Era&token=ETH)
+
+- [Owlto Finance](https://owlto.finance/)
+
+- [MES Protocol](https://www.mesprotocol.com/)
 
 #### 2.10 其他社区工具
