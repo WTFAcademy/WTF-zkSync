@@ -381,105 +381,106 @@
             ```
             
     - **useNFT**
-      - NFT合约中我们需要完成NFT持有数量查询，mint NFT逻辑，同时mint时，我们集成了paymaster的支付手段，首先我们需要关注的是我们采用的是zksync-ethers的`Contract`和`Web3Provider` 这是官方扩展的类，里面涉及了抽象账户，Paymaster逻辑等zksync独特的功能，我们这边需要用到paymaster，故我们不能直接采用ethers里面构建合约；其次我们在调用合约的时候传入`customData`即可，这里我们在前面`usePaymaster`中已经提及，这是调用paymaster的关键
-
-      ```jsx
-      
-      // 截取代码组合，不可运行
-      import { Contract, Web3Provider } from "zksync-ethers";
-      import { ethers } from "ethers";
-      
-      const contract = useMemo(() => {
-           if (!isConnected) return null;
-           const ethersProvider = new Web3Provider(walletProvider!)
-           const signer = ethersProvider.getSigner();
-           return new Contract(NFT_ADDRESS, NFT_ABI, signer);
-      }, [isConnected, address])
-      
-      async () => {
-        if (!contract) return null;
-        const tx = await contract.mint(address, "Space Stone", {
-            customData: canNonGas ? customData : undefined
-        });
-        await tx.wait();
-        return tx;
-      }
-      ```
-      - 将其完善到hook中：
-
-      ```jsx
-      const useNft = () => {
-          const { isConnected, address } = useWeb3ModalAccount()
-          const { walletProvider } = useWeb3ModalProvider()
-      
-          const { canNonGas } = useToken();
-          const { customData } = usePaymaster();
-      
-          const contract = useMemo(() => {
-              if (!isConnected) return null;
-      
-              const ethersProvider = new Web3Provider(walletProvider!)
-              const signer = ethersProvider.getSigner();
-              return new Contract(NFT_ADDRESS, NFT_ABI, signer);
-          }, [isConnected, address])
-      
-          const { data: nftBalance, refetch } = useQuery(["nftBalance", address], async () => {
-              if (!contract) return null;
-              const balance = await contract.balanceOf(address);
-              return balance.toString();
-          }, {
-              enabled: isConnected,
-              refetchInterval: 0
-          })
-      
-          const {
-              data: mintTx,
-              isLoading: isMintLoading,
-              mutateAsync: mint
-          } = useMutation(["mintNft", address], async () => {
+        - NFT合约中我们需要完成NFT持有数量查询，mint NFT逻辑，同时mint时，我们集成了paymaster的支付手段，首先我们需要关注的是我们采用的是zksync-ethers的`Contract`和`Web3Provider` 这是官方扩展的类，里面涉及了抽象账户，Paymaster逻辑等zksync独特的功能，我们这边需要用到paymaster，故我们不能直接采用ethers里面构建合约；其次我们在调用合约的时候传入`customData`即可，这里我们在前面`usePaymaster`中已经提及，这是调用paymaster的关键：
+            
+            ```jsx
+            // 截取代码组合，不可运行
+            import { Contract, Web3Provider } from "zksync-ethers";
+            import { ethers } from "ethers";
+            
+            const contract = useMemo(() => {
+                 if (!isConnected) return null;
+                 const ethersProvider = new Web3Provider(walletProvider!)
+                 const signer = ethersProvider.getSigner();
+                 return new Contract(NFT_ADDRESS, NFT_ABI, signer);
+            }, [isConnected, address])
+            
+            async () => {
               if (!contract) return null;
               const tx = await contract.mint(address, "Space Stone", {
                   customData: canNonGas ? customData : undefined
               });
               await tx.wait();
               return tx;
-          }, {
-              onSuccess: () => {
-                  toast.success("NFT minted successfully");
-                  refetch();
-              },
-              onError: (err: any) => {
-                  toast.error(err.message);
-              }
-          })
-      
-          return {
-              nftBalance,
-              mintTx,
-              isMintLoading,
-              mint,
-          }
-      }
-      ```
-      - 当然我们也要与token类似，为了辅助我们页面展示mint NFT消耗Gas的情况，我们也加入了cost计算，在hook中增加函数
-      
-      ```jsx
-      
-      const getNFTMintEstimate = async () => {
-          const ethersProvider = new Web3Provider(walletProvider!)
-          const nftContract = contract!;
-          const gasEstimate = await nftContract.estimateGas.mint(address, "Space Stone");
-          const gasPrice = await ethersProvider.getGasPrice();
-          const cost = gasPrice.mul(gasEstimate);
-      
-          return {
-              gas: ethers.utils.formatEther(gasEstimate).toString(),
-              gasPrice: ethers.utils.formatEther(gasPrice).toString(),
-              cost: ethers.utils.formatEther(cost).toString()
-          }
-      }
-      ```
-
+            }
+            ```
+            
+        - 将其完善到hook中：
+            
+            ```jsx
+            const useNft = () => {
+                const { isConnected, address } = useWeb3ModalAccount()
+                const { walletProvider } = useWeb3ModalProvider()
+            
+                const { canNonGas } = useToken();
+                const { customData } = usePaymaster();
+            
+                const contract = useMemo(() => {
+                    if (!isConnected) return null;
+            
+                    const ethersProvider = new Web3Provider(walletProvider!)
+                    const signer = ethersProvider.getSigner();
+                    return new Contract(NFT_ADDRESS, NFT_ABI, signer);
+                }, [isConnected, address])
+            
+                const { data: nftBalance, refetch } = useQuery(["nftBalance", address], async () => {
+                    if (!contract) return null;
+                    const balance = await contract.balanceOf(address);
+                    return balance.toString();
+                }, {
+                    enabled: isConnected,
+                    refetchInterval: 0
+                })
+            
+                const {
+                    data: mintTx,
+                    isLoading: isMintLoading,
+                    mutateAsync: mint
+                } = useMutation(["mintNft", address], async () => {
+                    if (!contract) return null;
+                    const tx = await contract.mint(address, "Space Stone", {
+                        customData: canNonGas ? customData : undefined
+                    });
+                    await tx.wait();
+                    return tx;
+                }, {
+                    onSuccess: () => {
+                        toast.success("NFT minted successfully");
+                        refetch();
+                    },
+                    onError: (err: any) => {
+                        toast.error(err.message);
+                    }
+                })
+            
+                return {
+                    nftBalance,
+                    mintTx,
+                    isMintLoading,
+                    mint,
+                }
+            }
+            ```
+            
+        - 当然我们也要与token类似，为了辅助我们页面展示mint NFT消耗Gas的情况，我们也加入了getNFTMintEstimate计算，在hook中增加函数
+            
+            ```jsx
+            
+            const getNFTMintEstimate = async () => {
+                const ethersProvider = new Web3Provider(walletProvider!)
+                const nftContract = contract!;
+                const gasEstimate = await nftContract.estimateGas.mint(address, "Space Stone");
+                const gasPrice = await ethersProvider.getGasPrice();
+                const cost = gasPrice.mul(gasEstimate);
+            
+                return {
+                    gas: ethers.utils.formatEther(gasEstimate).toString(),
+                    gasPrice: ethers.utils.formatEther(gasPrice).toString(),
+                    cost: ethers.utils.formatEther(cost).toString()
+                }
+            }
+            ```
+        
 4. 前面我们已经完了所有合约交互相关的核心逻辑，接下来我们要把他们运用到页面中，让我们的页面更加完善，我们需完成一下内容，样式部分我已经在模版中完成，只需要使用hooks填充数据即可：
     - 打开`app/(main)/step-mint.tsx` 完成初始数据加载
            
