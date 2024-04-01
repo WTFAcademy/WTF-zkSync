@@ -10,8 +10,6 @@ Community: [Discord](https://discord.gg/5akcruXrsk)
 
 **第1讲：Layer 2 基础**：【[教程](./01_L2/readme.md)】
 
-**第4讲：开发工具**：【[教程](./04_Toolings/readme.md)】
-
 ## TODO
 
 **第2讲：zkSync 基础**
