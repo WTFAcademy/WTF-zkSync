@@ -1,15 +1,14 @@
-```yaml
-title: 1. Layer 2 基础
+---
+title: 4. 开发工具
 tags:
+  - ethereum
+  - layer 2
+  - rollup
+  - zk
+  - zksync
+---
 
-- ethereum
-- layer 2
-- rollup
-- zk
-- zksync
-```
-
-# WTF zkSync极简入门: 1. Layer 2 基础
+# WTF zkSync极简入门: 4. 开发工具
 
 这个系列教程帮助开发者入门 zkSync 开发。
 推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_) 社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy) 所有代码和教程开源在 github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
@@ -24,9 +23,9 @@ zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合
 
 #### 1.1 EVM 指令
 
-- `CREATE、CREATE2`：zkSync Era 中的合约部署是通过向 **ContractDeployer*** 系统合约传入合约字节码（**EIP712** 的 **factoryDeps** 中包含）的哈希值来实现的。
+- `CREATE、CREATE2`：zkSync Era 中的合约部署是通过向 **ContractDeployer** 系统合约传入合约字节码（**EIP712** 的 **factoryDeps** 中包含）的哈希值来实现的。
 
-- `CALL、STATICCALL、DELEGATEALL`：zkSync Era 调用时的内存增长发生在调用结束后，这导致了返回数据的拷贝仅在调用结束后进行。
+- `CALL、STATICCALL、DELEGATECALL`：zkSync Era 调用时的内存增长发生在调用结束后，这导致了返回数据的拷贝仅在调用结束后进行。
 
 - `MSTORE、MLOAD`：在 zkEVM 中，内存增长是按字节计算的，而不是像 EVM 上是按字数计算的。
 
@@ -34,7 +33,7 @@ zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合
 
 - `RETURN、STOP`：如果在构造函数中使用 **assembly** 并添加了 **return** 或 **stop()**，将导致 immutable 的变量初始化失败。
 
-- `TIMESTAMP、MUMBER`：
+- `TIMESTAMP、NUMBER`：获取 zkSync 上当前区块的时间戳（单位为秒）、区块高度（如果处于 padding 状态则为 null）
 
 - `COINBASE`：返回 **Bootloader** 合约的地址。
 
