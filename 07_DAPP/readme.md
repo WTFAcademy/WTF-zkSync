@@ -461,7 +461,7 @@
           }
       }
       ```
-      - 当然我们也要与token类似，为了辅助我们页面展示mint NFT消耗Gas的情况，我们也加入了xxx计算，在hook中增加函数
+      - 当然我们也要与token类似，为了辅助我们页面展示mint NFT消耗Gas的情况，我们也加入了cost计算，在hook中增加函数
       
       ```jsx
       
