@@ -461,8 +461,24 @@
           }
       }
       ```
-
-
+      - 当然我们也要与token类似，为了辅助我们页面展示mint NFT消耗Gas的情况，我们也加入了xxx计算，在hook中增加函数
+      
+      ```jsx
+      
+      const getNFTMintEstimate = async () => {
+          const ethersProvider = new Web3Provider(walletProvider!)
+          const nftContract = contract!;
+          const gasEstimate = await nftContract.estimateGas.mint(address, "Space Stone");
+          const gasPrice = await ethersProvider.getGasPrice();
+          const cost = gasPrice.mul(gasEstimate);
+      
+          return {
+              gas: ethers.utils.formatEther(gasEstimate).toString(),
+              gasPrice: ethers.utils.formatEther(gasPrice).toString(),
+              cost: ethers.utils.formatEther(cost).toString()
+          }
+      }
+      ```
 
 4. 前面我们已经完了所有合约交互相关的核心逻辑，接下来我们要把他们运用到页面中，让我们的页面更加完善，我们需完成一下内容，样式部分我已经在模版中完成，只需要使用hooks填充数据即可：
     - 打开`app/(main)/step-mint.tsx` 完成初始数据加载
