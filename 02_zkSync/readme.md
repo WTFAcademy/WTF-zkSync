@@ -21,8 +21,6 @@ zkSync 是以太坊的第二层（Layer 2）扩展解决方案，zkSync 构建�
 
 ### 1.2 zkSync 工作原理
 
-
-
 ### 1.3 zkSync 团队
 
 [Matter labs](https://matter-labs.io/) 是一家德国的区块链技术公司，致力于以太坊扩展，主要开发和创新零知识证明技术。
