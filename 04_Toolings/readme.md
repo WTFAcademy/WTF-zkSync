@@ -95,7 +95,7 @@ zkSync 的原生抽象账户和以太坊的 EIP4337 都旨在增强账户的灵�
 
 - **实现**：zkSync 的抽象账户集成在协议层面。而 EIP4337 则避免了在协议层面实施。
 
-- **账户类型**：在 zkSync 中智能合约账户和基础账户都是 first-class citizens。
+- **账户类型**：在 zkSync 中智能合约账户和基础账户都是一等公民。
 
 - **交易处理**：zkSync Era 使用统一的内存池来处理基础账户（EOA）和智能合约账户的交易。
 
@@ -103,7 +103,7 @@ zkSync 的原生抽象账户和以太坊的 EIP4337 都旨在增强账户的灵�
 
 #### 2.1 区块链浏览器
 
-**zkSync Era Block Explorer** ( https://explorer.zksync.io/ )
+[zkSync Era Block Explorer](https://explorer.zksync.io/)
 
 `zkSync Era Block Explorer` 提供 zkSync 网络上所有交易、区块、合约等信息。可以在右上角下拉菜单中进行不同网络切换。
 
@@ -111,11 +111,13 @@ zkSync 的原生抽象账户和以太坊的 EIP4337 都旨在增强账户的灵�
 
 #### 2.2 zkSync 水龙头
 
-**Chainstack Faucet** ( https://faucet.chainstack.com/zksync-testnet-faucet )
+[Chainstack Faucet](https://faucet.chainstack.com/zksync-testnet-faucet)
+
+![水龙头](./img/faucet.png)
 
 #### 2.3 zkSync CLI
 
-**zkSync CLI** ( https://github.com/matter-labs/zksync-cli ) 是一个用于简化 zkSync 开发与交互的命令行工具。它提供了诸如管理本地开发环境、与合约交互、管理代币等功能的命令。它包含以下命令及对应功能：
+[zkSync CLI](https://github.com/matter-labs/zksync-cli) 是一个用于简化 zkSync 开发与交互的命令行工具。它提供了诸如管理本地开发环境、与合约交互、管理代币等功能的命令。它包含以下命令及对应功能：
 
 ##### 2.3.1 dev
 
@@ -137,17 +139,21 @@ npx zksync-cli dev start
 
 首次运行时需要选择**节点类型**和**附加的模块**（后续可通过 `npx zksync-cli dev config` 修改）。
 
-- Node to use
+- 节点选择
   
   - In memory node：使用内存建立本地测试环境，只有 L2 节点，[测试账户地址和私钥](https://docs.zksync.io/build/test-and-debug/era-test-node.html#use-pre-configured-rich-wallets)。
   
   - Dockerized node：使用 Docker 建立本地测试环境，包含 L1 和 L2 节点。
 
-- Additional modules to use
+![节点选择](./img/cli01.png)
+
+- 附加模块选择
   
   - Portal：添加钱包和跨链桥相关功能。
   
   - Block Explorer：添加 zkSync 区块链浏览器 UI 和 API 相关功能。
+
+![附加模块](./img/cli02.png)
 
 > 后续演示环境：`In memory node` 且 `不安装附加模块`。
 
@@ -166,6 +172,8 @@ npx zksync-cli dev start
 ##### 2.3.5 create
 
 用于快速创建项目（前端、智能合约和脚本）。
+
+![create](./img/cli03.png)
 
 ##### 2.3.6 wallet
 
@@ -226,21 +234,17 @@ npx zksync-cli create
 
 [foundry-zksync](https://github.com/matter-labs/foundry-zksync) 允许用户使用 foundry 在 zkSync 上进行智能合约开发，引入 `zkforge` 和 `zkcast` 扩展了原有的 `forge` 和 `cast` 使开发人员能更加便捷地在 zkSync 进行开发。
 
-#### 2.7 In-Memory node
-
-`In-Memory node` 使用内存数据库来存储状态信息，并使用简化的 hashmaps 来跟踪区块和交易。使用 `npx zksync-cli dev start` 可以快速启动 `In-Memory node`。
-
-#### 2.8 zksync-ethers
+#### 2.7 zksync-ethers
 
 [zksync-ethers](https://github.com/zksync-sdk/zksync-ethers) 扩展了 `ethers` 库以支持 zkSync 特有的功能（如账户抽象）。
 
-##### 2.8.1 安装
+##### 2.7.1 安装
 
 ```
 pnpm i zksync-ethers ethers@6
 ```
 
-##### 2.8.2 连接到 zkSync Era 网络
+##### 2.7.2 连接到 zkSync Era 网络
 
 ```js
 import { Provider, utils, types } from "zksync-ethers";
@@ -249,17 +253,3 @@ import { ethers } from "ethers";
 const provider = Provider.getDefaultProvider(types.Network.Sepolia); // zkSync Era testnet (L2)
 const ethProvider = ethers.getDefaultProvider("sepolia"); // Sepolia testnet (L1)
 ```
-
-#### 2.9 垮链桥
-
-- [zkSync Bridge](https://portal.zksync.io/bridge/)
-
-- [Omnibtc Finance](https://www.omnibtc.finance/)
-
-- [Orbiter Finance](https://www.orbiter.finance/?source=Ethereum&dest=zkSync%20Era&token=ETH)
-
-- [Owlto Finance](https://owlto.finance/)
-
-- [MES Protocol](https://www.mesprotocol.com/)
-
-#### 2.10 其他社区工具
