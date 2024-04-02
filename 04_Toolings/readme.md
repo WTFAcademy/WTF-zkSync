@@ -1,11 +1,9 @@
 ---
 title: 4. 开发工具
 tags:
-  - ethereum
-  - layer 2
-  - rollup
-  - zk
   - zksync
+  - toolings
+  - zksync-cli
 ---
 
 # WTF zkSync极简入门: 4. 开发工具
