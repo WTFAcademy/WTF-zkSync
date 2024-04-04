@@ -23,7 +23,21 @@ zkSync 是以太坊的第二层（Layer 2）扩展解决方案，zkSync 构建�
 
 ### 1.3 zkSync 团队
 
-[Matter labs](https://matter-labs.io/) 是一家德国的区块链技术公司，致力于以太坊扩展，主要开发和创新零知识证明技术。
+zkSync 背后的公司 [Matter labs](https://matter-labs.io/)  总部位于德国，由 Alex Gluchowski 于 2018 年创立，并迅速发展到拥有 50 多名员工。该团队由经验丰富的区块链开发人员、研究人员和企业家组成，他们齐心协力创造一种更高效、更具成本效益且更安全的以太坊交易方式。以下是一些核心成员：
+
+- Alex Gluchowski：Matter Labs的联合创始人和CEO，是zkSync项目的主要负责人之一，拥有丰富的区块链和密码学经验。
+
+- Alex Vlasov：Matter Labs的联合创始人和CTO，是zkSync项目的主要技术负责人之一，拥有深厚的技术背景和丰富的经验。
+
+- Dmitry Khovratovich：Matter Labs的首席科学家，是密码学领域的知名专家之一，曾在多个国际密码学会议上发表过重要的论文。
+
+团队的融资信息如下：
+
+- 2019/09，种子轮融资 200 万美元
+- 2021/02，A轮融资600万美元（Binance、Aave、Curve 和 Coinbase Ventures）
+- 2021/11，B轮融资5000万美元（a16z Crypto 领投）
+- 2022/01，融资2亿美元（BitDAO）
+- 2022/11，C轮融资2 亿美元（Dragonfly 和 Blockchain Capital 领投）
 
 ### 1.4 zkSync1.0、zkSync2.0
 
