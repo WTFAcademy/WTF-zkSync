@@ -93,6 +93,101 @@ zkSync 的账户抽象化简化了交易流程，用户可以更容易地与智�
 - **代币支付交易费**：用户可以使用特定的代币支付交易费，而`Paymaster`负责将这些代币转换成网络接受的费用形式。
 - **企业和应用赞助**：企业或应用开发者可以作为`Paymaster`，为其用户群体支付交易费用，提升用户体验。
 
-## 结语
+## 5. 抽象账户合约
 
-账户抽象化是 zkSync 提供的一项创新特性，它极大地提升了用户体验，简化了交易流程，并为开发者打造复杂、安全且用户友好的区块链应用提供了强大的工具。通过探索`Paymaster`和账户抽象化的各种应用，zkSync 正在推动区块链技术的边界，开拓去中心化世界的新未来。
+这里我们介绍与zkSync抽象账户相关的两个接口合约： `IAccount` 和 `IPaymaster`。我们会在之后的教程中介绍如何实现它们。
+
+### 5.1 IAccount
+
+`IAccount`是抽象账户的接口合约，主要包含`5`个函数：
+
+1. `validateTransaction`（必须实现）：由引导程序调用，用于验证账户是否同意处理交易（并可能支付费用）。它的参数分别为用于在浏览器中使用的交易哈希 `txHash`，由EOAs签名的交易哈希 `_suggestedSignedHash`，交易对象本身 `_transaction`（包含交易类型，发送者等数据）。若验证成功，则返回一个magic值 `ACCOUNT_VALIDATION_SUCCESS_MAGIC`。
+
+2. `executeTransaction`（必须实现）：向用户收取费用后系统会调用，并执行交易。参数与 `validateTransaction` 函数一致。
+
+3. `payForTransaction`（可选）：如果交易没有其他地址支付gas，系统将调用它，用合约中的ETH支付gas。如果这个账户总是依赖paymaster支付gas，则不需要实现它。
+
+4. `prepareForPaymaster`（可选）：如果交易有其他地址支付付款，系统将调用它。此方法应用于准备与付款人的交互，比如让付款人批准 ERC-20 代币以支付gas。
+
+5. `executeTransactionFromOutside`（可选）：该函数不是强制实现的，但我们强烈鼓励这样做，因为在优先模式的情况下（例如，如果运营商没有响应），则需要从EOA帐户开始交易。
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+import "../libraries/TransactionHelper.sol";
+
+bytes4 constant ACCOUNT_VALIDATION_SUCCESS_MAGIC = IAccount.validateTransaction.selector;
+
+interface IAccount {
+    function validateTransaction(
+        bytes32 _txHash,
+        bytes32 _suggestedSignedHash,
+        Transaction calldata _transaction
+    ) external payable returns (bytes4 magic);
+
+    function executeTransaction(
+        bytes32 _txHash,
+        bytes32 _suggestedSignedHash,
+        Transaction calldata _transaction
+    ) external payable;
+
+    function executeTransactionFromOutside(Transaction calldata _transaction) external payable;
+
+    function payForTransaction(
+        bytes32 _txHash,
+        bytes32 _suggestedSignedHash,
+        Transaction calldata _transaction
+    ) external payable;
+
+    function prepareForPaymaster(
+        bytes32 _txHash,
+        bytes32 _possibleSignedHash,
+        Transaction calldata _transaction
+    ) external payable;
+}
+```
+
+### 5.2 IPaymaster
+
+与ERC4337的Paymaster一样，zkSync的抽象账户体系支持其他账户帮忙支付gas。`IPaymaster`是Paymaster的接口合约，主要包含`2`个函数。
+
+1. `validateAndPayForPaymasterTransaction`（必须实现）：由引导程序调用，以验证支付方是否同意支付交易的费用。如果支付人愿意为交易付款，则此它必须至少发送`tx.gasprice * tx.gasLimit`给运营商。若验证成功，则返回magic值 `PAYMASTER_VALIDATION_SUCCESS_MAGIC`和交易上下文`context`（最多1024字节长度的字节数组，将传递给`postTransaction`方法）。
+
+2. `postTransaction`（可选）：在事务执行后调用。请注意，与EIP4337不同，zkSync抽象账户不能保证一定会调用此方法：比如事务因out of gas错误而失败，则不会调用此方法。它的参数分别为：的上下文`_context`、交易对象`_transaction`、交易哈希`_txHash`，由EOAs签名的交易哈希 `_suggestedSignedHash`，交易执行的结果`_txResult`，以及付款人可能收到Gas退款的最大值`_maxRefundedGas`。
+
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+import "../libraries/TransactionHelper.sol";
+
+enum ExecutionResult {
+    Revert,
+    Success
+}
+
+bytes4 constant PAYMASTER_VALIDATION_SUCCESS_MAGIC = IPaymaster.validateAndPayForPaymasterTransaction.selector;
+
+interface IPaymaster {
+    function validateAndPayForPaymasterTransaction(
+        bytes32 _txHash,
+        bytes32 _suggestedSignedHash,
+        Transaction calldata _transaction
+    ) external payable returns (bytes4 magic, bytes memory context);
+
+    function postTransaction(
+        bytes calldata _context,
+        Transaction calldata _transaction,
+        bytes32 _txHash,
+        bytes32 _suggestedSignedHash,
+        ExecutionResult _txResult,
+        uint256 _maxRefundedGas
+    ) external payable;
+}
+```
+
+## 6. 总结
+
+这一讲，我们介绍了zkSync的账户抽象特性。zkSync提供了原生原生账户抽象，极大地提升了用户体验，简化了交易流程，并为开发者打造用户友好的应用提供了基础。通过探索账户抽象和`Paymaster`的各种应用，zkSync正在推动区块链技术的边界，开拓去中心化世界的新未来。
