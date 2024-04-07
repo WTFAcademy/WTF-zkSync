@@ -31,7 +31,7 @@ tags:
 
 ## 2. `ETH` 和 `zkSync` 的不同
 
-zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合约，并维持高安全标准，从而减少了重复进行安全审计的需求。但是，仍存在一定差异，必要情况下还请阅读[差异文档](https://docs.zksync.io/build/developer-reference/differences-with-ethereum.html)。
+zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合约，并维持高安全标准，从而减少了重复进行安全审计的需求。但是，仍存在一定差异，必要情况下还请阅读 [差异文档](https://docs.zksync.io/build/developer-reference/differences-with-ethereum.html)。
 
 ## 3. 实现一个 `Paymaster` 合约
 
@@ -56,10 +56,10 @@ bytes4 constant PAYMASTER_VALIDATION_SUCCESS_MAGIC = IPaymaster.validateAndPayFo
 interface IPaymaster {
     /// @dev 该函数有只能由 bootloader 调用用来验证该 paymaster 实现是否同意支付交易的费用，如果付款人愿意为交易付款，则此方法必须至少发送 tx.gasprice * tx.gasLimit 给 operator
     /// @param _txHash 交易的哈希值
-    /// @param _suggestedSignedHash 由EOA签名的交易哈希值
+    /// @param _suggestedSignedHash 由 EOA 签名的交易哈希值
     /// @param _transaction 交易本身
     /// @return magic 如果 paymaster 同意支付交易费用，则返回值应等于 validateAndPayForPaymasterTransaction 方法的签名。
-    /// @return context 交易的“上下文”：长度最多为1024字节的字节数组，将传递给账户的 postTransaction 方法。
+    /// @return context 交易的“上下文”：长度最多为 1024 字节的字节数组，将传递给账户的 postTransaction 方法。
     /// @dev 开发者应尽量保留尽可能多的步骤，无论交易是否有效，因为这个方法也用于 gas 费用估算（不包括一些必要的数据，例如签名）。
     function validateAndPayForPaymasterTransaction(
         bytes32 _txHash,
@@ -71,7 +71,7 @@ interface IPaymaster {
     /// @param _context, 执行的“上下文”，由 "validateAndPayForPaymasterTransaction" 方法返回。
     /// @param  _transaction, 用户的交易
     /// @param _txResult, 交易执行结果（成功或失败）。
-    /// @param _maxRefundedGas, 可退还给 paymaster的 gas 上限。
+    /// @param _maxRefundedGas, 可退还给 paymaster 的 gas 上限。
     /// @dev 实际退还的金额取决于“postOp”本身消耗的燃气量，因此开发人员应考虑这一点。
     function postTransaction(
         bytes calldata _context,
