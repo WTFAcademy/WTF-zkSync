@@ -12,9 +12,9 @@ Community: [Discord](https://discord.gg/5akcruXrsk)
 
 **第2讲：zkSync 基础**：【[教程](./02_zkSync/readme.md)】
 
-## TODO
+**第3讲：抽象账户（AA）**：【[教程](./03_AA/readme.md)】
 
-**第3讲：理解抽象账户（AA）**
+## TODO
 
 **第4讲：开发工具**
 
