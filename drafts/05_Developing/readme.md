@@ -39,7 +39,7 @@ zkSync Era 可以处理绝大多数基于以太坊虚拟机（EVM）的智能合
 
 实现该合约之前，我们先了解下 `IPaymaster` 接口，[该接口定义如下](https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/interfaces/IPaymaster.sol)：
 
-```go
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.20;
