@@ -140,7 +140,7 @@ zkSync rollup操作生命周期如下：
 
 ## 7. 原生抽象账户
 
-zkSync Era是第一个实现原生账户抽象（Account Abtraction）的 EVM 兼容链。
+zkSync Era是第一个实现原生账户抽象（Account Abstraction）的 EVM 兼容链。
 
 在传统的以太坊生态中，账户分为外部拥有账户（Externally Owned Accounts, EOAs）和合约账户。EOAs由私钥控制，而合约账户则由部署在其中的代码控制。这种设计虽然简单有效，但在某些情况下限制了可操作性和灵活性。
 
