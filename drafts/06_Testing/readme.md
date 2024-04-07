@@ -1,5 +1,6 @@
 ---
-title: 5. 合约测试 tags:
+title: 5. 合约测试
+tags:
   - ethereum
   - layer 2
   - rollup
@@ -8,12 +9,14 @@ title: 5. 合约测试 tags:
   - testing
   - hardhat
 ---
+
 # WTF zkSync极简入门: 5. 合约测试
 
 这个系列教程帮助开发者入门 zkSync 开发。
 推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_) 社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy) 所有代码和教程开源在 github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
+
 在开发 zkSync 合约时，编写测试程序是验证合约逻辑正确性的关键一环。这一讲将引导你了解如何在 zkSync 中编写测试程序。
 
 ## 准备工作
