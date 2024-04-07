@@ -13,7 +13,7 @@ tags:
 
 ---
 
-这一讲，我们将介绍 zzkSync 的生态和一些常用的工具。
+这一讲，我们将介绍 zkSync 的生态和一些常用的工具。
 
 ### 生态&工具
 
@@ -53,7 +53,7 @@ tags:
 npx zksync-cli dev start
 ```
 
-首次运行时需要选择**节点类型**和**附加的模块**（后续可通过 `npx zksync-cli dev config` 修改）。
+首次运行时需要选择 **节点类型** 和 **附加的模块**（后续可通过 `npx zksync-cli dev config` 修改）。
 
 - 节点选择
   
@@ -109,7 +109,7 @@ npx zksync-cli dev start
 
 ##### 4.2 安装插件
 
-点击左边菜单栏底部的 `插件管理` 选项，搜索 `ZKSYNC` 并启用插件。启用成功后可以在左边菜单栏中看到 zkSync 的Logo，我们点击它进入 zkSync 的开发环境。
+点击左边菜单栏底部的 `插件管理` 选项，搜索 `ZKSYNC` 并启用插件。启用成功后可以在左边菜单栏中看到 zkSync 的 Logo，我们点击它进入 zkSync 的开发环境。
 
 <img title="" src="./img/remix01.png" alt="插件下载" data-align="center">
 
