@@ -31,7 +31,7 @@ npm install -D hardhat
 ```shell
 npx hardhat
 ```
-![hardhat-step](./1.png)
+![hardhat-step](./img/1.png)
 
 按照提示完成项目设置后，你的工作目录下会自动生成一些新目录，比如：`contracts`, `test`。你的基础开发环境就准备完成了。
 
@@ -97,7 +97,7 @@ npx hardhat test
 
 当测试顺利通过时，你会看到一个绿色的复选框以及测试通过的信息，表明你的合约按预期工作。
 
-![result](./2.png)
+![result](./img/2.png)
 
 
 ## zkSync相关测试
@@ -106,7 +106,7 @@ npx hardhat test
 
 在zkSync测试中，你需要用到`zksync-cli`命令，在第一次使用这个命令时它会问你是否要安装，回答`y`即可。
 
-![zksync-cli](./3.png)
+![zksync-cli](./img/3.png)
 
 我们将用这个命令来启动一个本地的zkSync的运行环境，包括一个临时的zkSync`In-Memory`节点，这个节点的运行需要依靠`docker`，所以你本地必须提前安装好了`docker`，[下载安装](https://www.docker.com/products/docker-desktop/)。 (`docker`是一种应用容器，你是第一次接触到它的话，就把它看成虚拟机就行，不需要深入，因为`zksync-cli`命令会帮我们屏蔽掉使用细节，有兴趣的朋友，可以自行探索 [docker](https://www.docker.com))
 
@@ -115,17 +115,17 @@ npx hardhat test
 
 在确保docker在正常运行后，使用`npx zksync-cli dev start`命令来启动一个运行环境，启动节点类型选择`In-Memory`节点，不需要添加任何附加模块。
 
-![zksync-cli](./4.png)
+![zksync-cli](./img/4.png)
 
 第一次启动时会先创建一个docker镜像，等待运行完成即可，运行完后你的临时节点将在后台运行，你会得到一个本地zkSync链的RPC连接地址
 
-![zksync-docker](./5.png)
+![zksync-docker](./img/5.png)
 
 ### 创建测试
 
 使用`npx zksync-cli create test-demo`命令可以创建一个名为`test-demo`的模板测试项目，命令运行时会询问你要测试类型和要用到的框架，按照自己喜好选择就行了。
 
-![zksync-test](./6.png)
+![zksync-test](./img/6.png)
 
 这里我将选择`npm`作为项目的依赖管理器，使用`HardHat` + `Solidity`进行开发测试, `ethers`库我选择了v6版本。
 
@@ -146,7 +146,7 @@ import "@matterlabs/hardhat-zksync-chai-matchers";
 
 最后运行`npm test`来启动测试，`test`目录下的测试文件都将被运行。（第一次启动时会下载`zksolc`和`solc`，若等待下载太久请自行解决网络问题)
 
-![zksync-test-result](./7.png)
+![zksync-test-result](./img/7.png)
 
 
 ## 总结
