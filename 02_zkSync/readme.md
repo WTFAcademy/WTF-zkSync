@@ -140,7 +140,7 @@ zkSync rollup操作生命周期如下：
 
 ## 7. 原生抽象账户
 
-zkSync Era是第一个实现原生账户抽象（Account Abtraction）的 EVM 兼容链。
+zkSync Era是第一个实现原生账户抽象（Account Abstraction）的 EVM 兼容链。
 
 在传统的以太坊生态中，账户分为外部拥有账户（Externally Owned Accounts, EOAs）和合约账户。EOAs由私钥控制，而合约账户则由部署在其中的代码控制。这种设计虽然简单有效，但在某些情况下限制了可操作性和灵活性。
 
@@ -164,7 +164,7 @@ zkSync提供了一系列模版和工具帮助开发者基于账户抽象进行�
 
 - 使用可升级合约：zkSync Era还在开发早期，虽然团队进行了广泛的测试来确保EVM兼容性，但问题仍然可能会出现。因此，部署合约时应尽量使用可升级的代理合约，应对可能发生的问题。如果你不了解代理合约/可升级合约，可以参考 WTF Solidity 教程[第48讲](https://github.com/AmazingAng/WTF-Solidity/blob/main/48_TransparentProxy/readme.md)和[49讲](https://github.com/AmazingAng/WTF-Solidity/blob/main/49_UUPS/readme.md)。
 
-- 不要依赖EVM的gas逻辑：zkSync有一套自己的gas逻辑，与L1不同，比如会考虑数据发布在L1时的gas消耗。
+- 不要依赖EVM的gas逻辑：zkSync有一套自己的gas逻辑，与L1不同，比如会考虑数据发布在L1时的gas消耗，详情请参考[文档](https://docs.zksync.io/zk-stack/concepts/fee-mechanism.html)。
 
 ## 9. 总结
 
