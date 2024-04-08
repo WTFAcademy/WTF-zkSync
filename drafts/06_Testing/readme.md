@@ -1,5 +1,5 @@
 ---
-title: 5. 合约测试
+title: 6. 合约测试
 tags:
   - ethereum
   - layer 2
@@ -151,7 +151,84 @@ import "@matterlabs/hardhat-zksync-chai-matchers";
 
 ![zksync-test-result](./img/7.png)
 
+## 使用 Foundry-zksync 进行测试
+foundry-zksync 是专门为 zkSync 定制的 Foundry 分支。它扩展了 Foundry 在以太坊应用开发方面的能力，以支持 zkSync，允许在 zkSync 上编译、部署、测试和与智能合约交互。 foundry-zksync 引入了 Foundry 现有 forge 和 cast 工具的 zkforge 和 zkcast 扩展，但专门为 zkSync 使用而设计。
+
+### 准备工作
+[foundry-zksync](https://github.com/matter-labs/foundry-zksync)是Foundry的专门分支，为zkSync量身定制。它扩展了Foundry对以太坊应用开发的能力，以支持zkSync，允许编译、部署、测试和与zkSync上的智能合约进行交互。foundry-zksync引入了针对zkSync使用而定制的Foundry现有forge和cast工具的扩展——zkforge和zkcast。
+
+安装foundry-zksync需要以下步骤：
+1. 克隆该仓库：
+```shell
+git clone git@github.com:matter-labs/foundry-zksync.git
+```
+2. 进入foundry-zksync目录并切换到主分支：
+```shell
+cd foundry-zksync && git checkout main 
+```
+3. 安装zkForge和zkCast：
+```shell
+cargo install --path ./crates/zkforge --profile local --force --locked
+cargo install --path ./crates/zkcast --profile local --force --locked
+```
+
+### 创建测试
+安装完成后，使用 `zkforge init test-demo` 初始化一个新项目，该操作将设置新 Foundry 项目的基本结构
+
+进入项目目录，运行 `zkforge test` 来执行测试，你会看到测试结果。
+
+或者使用
+```shell
+zkforge test --match-contract CounterTest --match-test test_Increment
+```
+通过合约或测试名称进行过滤来运行特定的测试
+
+### 将合约部署到zkSync sepolia测试网
+在src目录下创建一个新的合约文件`Greeter.sol`，内容如下：
+```solidity
+//SPDX-License-Identifier: Unlicense
+pragma solidity ^0.8.0;
+
+contract Greeter {
+    string private greeting;
+
+    constructor(string memory _greeting) {
+        greeting = _greeting;
+    }
+
+    function greet() public view returns (string memory) {
+        return greeting;
+    }
+
+    function setGreeting(string memory _greeting) public {
+        greeting = _greeting;
+    }
+}
+```
+进行编译:
+```shell
+zkforge zkbuild --is-system=true --use 0.8.13 --use-zksolc v1.4.0
+```
+将智能合约部署上链：
+```shell
+zkforge zkcreate src/Greeter.sol:Greeter --constructor-args "Hello zkSync" --private-key <你的钱包私钥> --rpc-url https://sepolia.era.zksync.dev --chain 300
+```
+如图所示，合约部署成功：
+
+![deploy-result](./img/8.png)
+
+合约地址为：`0x5922031e08e04847d62ebd09682fd7cf42ecc80f`
+
+使用`zkcast`与合约进行交互:
+```shell
+zkcast call <合约地址> "greet()(string)" --rpc-url https://sepolia.era.zksync.dev --chain 300
+```
+如图所示，调用成功：
+![cast-result](./img/9.png)
+
+
+
 
 ## 总结
 
-编写测试程序是智能合约开发中的重要一环，尤其是当你的合约逻辑变得复杂时。本教程简单介绍了如何在 zkSync 合约开发环境中编写和执行测试。实践中，你可能会需要编写更多的测试用例以覆盖各种场景，确保合约的健壮性。
+编写测试程序是智能合约开发中的重要一环，尤其是当你的合约逻辑变得复杂时。本教程简单介绍了如何在 zkSync 合约开发环境中编写和执行测试, 并利用foundry-zksync将合约部署到zkSync测试网。希望这些内容能帮助你更好地理解 zkSync 的合约测试。
