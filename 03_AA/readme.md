@@ -56,7 +56,7 @@ zkSync 上的帐户抽象协议与 EIP4337 非常相似，而 zkSync 期望在�
 
 每个智能合约账户按照官方建议遵从 [IAccount](https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/interfaces/IAccount.sol) 接口实现，包含以下 5 个关键方法：
 
-- `validateTransaction`（必须）：确认交易逻辑是否满足账户规则，如何错误应回滚，若是成功则继续执行交易流程
+- `validateTransaction`（必须）：确认交易逻辑是否满足账户规则，如果错误应回滚，若是成功则继续执行交易流程
 - `executeTransaction`（必须）：收取手续费后调用，执行交易内容
 - `payForTransaction`（可选）：不使用 Paymaster 将会直接采用正常手续费扣除方案(tx.gasprice * tx.gasLimit)
 - `prepareForPaymaster`（可选）：设置支付的方案，如：ERC-20 代币替代 Gas 支付(参考 [官方案例](https://docs.zksync.io/build/tutorials/smart-contract-development/paymasters/custom-paymaster-tutorial.html))
