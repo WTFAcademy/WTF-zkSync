@@ -180,7 +180,7 @@ const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
 });
 ```
 
-这里我们验证了 `paymasterInput` 支持支付交易的费用，否则直接 revert 了整个输出，这里的 js 代码中其实就是对 `ApprovalBased` 付款流程进行编码。
+这里我们验证了 `paymasterInput` 是否支持支付交易的费用，否则直接 revert 了整个输出，为了方便理解这里把 js 对 `ApprovalBased` 付款流程进行编码的代码贴了出来。
 
 ```solidity
 (address token, uint256 amount, bytes memory data) = abi.decode(
@@ -231,7 +231,6 @@ require(
     success,
     "Failed to transfer tx fee to the bootloader. Paymaster balance might not be enough."
 );
-
 ```
 
 这里主要做的事情是：
