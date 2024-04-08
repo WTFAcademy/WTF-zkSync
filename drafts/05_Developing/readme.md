@@ -129,6 +129,7 @@ contract ApprovalPaymaster is IPaymaster, Ownable {
         onlyBootloader
         returns (bytes4 magic, bytes memory context)
     {
+        // 待实现
     }
 
     function postTransaction(
@@ -138,7 +139,9 @@ contract ApprovalPaymaster is IPaymaster, Ownable {
         bytes32,
         ExecutionResult _txResult,
         uint256 _maxRefundedGas
-    ) external payable override onlyBootloader {}
+    ) external payable override onlyBootloader {
+      // 可选函数 这里不进行实现
+    }
 
     receive() external payable {}
 }
