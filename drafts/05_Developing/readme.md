@@ -88,6 +88,180 @@ interface IPaymaster {
 
 ### 3.2 `Paymaster` 合约实现
 
+整体合约框架如下：
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import {IPaymaster, ExecutionResult, PAYMASTER_VALIDATION_SUCCESS_MAGIC} from "@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IPaymaster.sol";
+import {IPaymasterFlow} from "@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IPaymasterFlow.sol";
+import {TransactionHelper, Transaction} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
+
+import "@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol";
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract ApprovalPaymaster is IPaymaster, Ownable {
+    uint256 constant PRICE_FOR_PAYING_FEES = 1;
+
+    address public allowedToken;
+
+    modifier onlyBootloader() {
+        require(
+            msg.sender == BOOTLOADER_FORMAL_ADDRESS,
+            "Only bootloader can call this method"
+        );
+        _;
+    }
+
+    constructor(address _erc20) {
+        allowedToken = _erc20;
+    }
+
+    function validateAndPayForPaymasterTransaction(
+        bytes32,
+        bytes32,
+        Transaction calldata _transaction
+    )
+        external
+        payable
+        onlyBootloader
+        returns (bytes4 magic, bytes memory context)
+    {
+        // 待实现
+    }
+
+    function postTransaction(
+        bytes calldata _context,
+        Transaction calldata _transaction,
+        bytes32,
+        bytes32,
+        ExecutionResult _txResult,
+        uint256 _maxRefundedGas
+    ) external payable override onlyBootloader {
+      // 可选函数 这里不进行实现
+    }
+
+    receive() external payable {}
+}
+```
+
+其中定义的 `onlyBootloader` 确保了 `validateAndPayForPaymasterTransaction` 和 `postTransaction` 函数仅 `BOOTLOADER_FORMAL_ADDRESS` 可以调用。
+
+这里的核心实现是 `validateAndPayForPaymasterTransaction` 函数，我们依次进行解读：
+
+```solidity
+magic = PAYMASTER_VALIDATION_SUCCESS_MAGIC;
+require(
+    _transaction.paymasterInput.length >= 4,
+    "The standard paymaster input must be at least 4 bytes long"
+);
+
+bytes4 paymasterInputSelector = bytes4(
+    _transaction.paymasterInput[0:4]
+);
+if (paymasterInputSelector == IPaymasterFlow.approvalBased.selector) {
+  // 待实现
+} else {
+    revert("Unsupported paymaster flow");
+}
+```
+
+```js
+  // Encoding the "ApprovalBased" paymaster flow's input
+const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
+  type: "ApprovalBased",
+  token: TOKEN_ADDRESS,
+  // set minimalAllowance as we defined in the paymaster contract
+  minimalAllowance: BigInt("1"),
+  // empty bytes as testnet paymaster does not use innerInput
+  innerInput: new Uint8Array(),
+});
+```
+
+这里我们验证了 `paymasterInput` 是否支持支付交易的费用，否则直接 revert 了整个输出，为了方便理解这里把 js 对 `ApprovalBased` 付款流程进行编码的代码贴了出来。
+
+```solidity
+(address token, uint256 amount, bytes memory data) = abi.decode(
+  _transaction.paymasterInput[4:],
+  (address, uint256, bytes)
+);
+
+// 校验token是否是同一个
+require(token == allowedToken, "Invalid token");
+
+// 我们验证用户是否提供了足够的授权额度
+address userAddress = address(uint160(_transaction.from));
+
+address thisAddress = address(this);
+
+uint256 providedAllowance = IERC20(token).allowance(
+  userAddress,
+  thisAddress
+);
+require(
+  providedAllowance >= PRICE_FOR_PAYING_FEES,
+  "Min allowance too low"
+);
+
+```
+这里主要做的事情是校验授权的 `token` 额度是否足够，实际的开发过程中其实是需要根据实际的 gas 反推出需要授权额度的，这里为了简单这我们在合约中写死了固定的 1。
+
+```solidity
+uint256 requiredETH = _transaction.gasLimit *
+    _transaction.maxFeePerGas;
+
+try
+    IERC20(token).transferFrom(userAddress, thisAddress, amount)
+{} catch (bytes memory revertReason) {
+    if (revertReason.length <= 4) {
+        revert("Failed to transferFrom from users' account");
+    } else {
+        assembly {
+            revert(add(0x20, revertReason), mload(revertReason))
+        }
+    }
+}
+
+(bool success, ) = payable(BOOTLOADER_FORMAL_ADDRESS).call{
+    value: requiredETH
+}("");
+require(
+    success,
+    "Failed to transfer tx fee to the bootloader. Paymaster balance might not be enough."
+);
+```
+
+这里主要做的事情是：
+计算出实际需要的 gas 费用，并将 ETH 其转到 `BOOTLOADER_FORMAL_ADDRESS` 地址，同时将用户的 `erc20` 转移到当前合约地址，官方的例子中这里 `amount` 并没有做任何的限制，但实际应该需要和当前价格进行计算得出的，给出的一个 demo 示例如下，这里的价格可以通过预言机的方式进行获取：
+
+```solidity
+uint256 requiredERC20 = (requiredETH * ETHUSDCPrice)/TokenUSDPrice;
+require(
+    providedAllowance >= requiredERC20,
+    "Min paying allowance too low"
+);
+
+require(
+    requiredERC20 >= amount,
+    "Not the required amount of tokens sent"
+);
+```
+
+最后我们还需要实现一个提取和接收 ETH 的函数，因为我们可能需要将合约地址的 ETH 提取出来，代码示例如下：
+
+```solidity
+function withdraw(address _to) external onlyOwner {
+    (bool success, ) = payable(_to).call{value: address(this).balance}("");
+    require(success, "Failed to withdraw funds from paymaster.");
+}
+
+receive() external payable {}
+```
+
+完整的代码实现如下：
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
@@ -215,13 +389,6 @@ contract ApprovalPaymaster is IPaymaster, Ownable {
     receive() external payable {}
 }
 ```
-
-代码说明：
-
-1. `allowedToken` 变量存储 `paymaster` 将接受的交易费用的 ERC-20 代币的地址，在构造函数中，合约将 `allowedToken` 设置为部署合约时传入的 `ERC20` 代币的地址。
-2. `onlyBootloader` 修饰符确保只有引导加载程序可以调用某些函数。
-3. `withdraw` 函数实现了将合约中的余额提取到指定地址的功能，该函数仅由 `owner` 执行
-4. 最后， `receive` 函数是一个特殊函数，在不提供任何数据的情况下向合约发送以太币时调用。这个函数是空的，所以合约接受以太币而不做任何其他事情。
 
 ## 4. 创建一个 `ERC20` 合约
 
