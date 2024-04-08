@@ -10,10 +10,10 @@ tags:
   - hardhat
 ---
 
-# WTF zkSync极简入门: 6. 合约测试
+# WTF zkSync 极简入门: 6. 合约测试
 
 这个系列教程帮助开发者入门 zkSync 开发。
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_) 社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy) 所有代码和教程开源在 github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
+推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy\_](https://twitter.com/WTFAcademy_) 社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy) 所有代码和教程开源在 github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
 
@@ -34,6 +34,7 @@ npm install -D hardhat
 ```shell
 npx hardhat
 ```
+
 ![hardhat-step](./img/1.png)
 
 按照提示完成项目设置后，你的工作目录下会自动生成一些新目录，比如：`contracts`, `test`。你的基础开发环境就准备完成了。
@@ -68,23 +69,23 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("MyContract", function () {
+  it("Should return the new number once it's changed", async function () {
+    const MyContract = await ethers.getContractFactory("MyContract");
+    const myContract = await MyContract.deploy();
+    await myContract.waitForDeployment();
 
-    it("Should return the new number once it's changed", async function () {
-        const MyContract = await ethers.getContractFactory("MyContract");
-        const myContract = await MyContract.deploy();
-        await myContract.waitForDeployment()
+    const setTx = await myContract.setMyNumber(7);
 
-        const setTx = await myContract.setMyNumber(7);
+    // 等待交易完成
+    await setTx.wait();
 
-        // 等待交易完成
-        await setTx.wait();
-
-        expect(await myContract.getMyNumber()).to.equal(7);
-    });
+    expect(await myContract.getMyNumber()).to.equal(7);
+  });
 });
 ```
 
 这段测试代码初看可能有些复杂，但其步骤可以简单分为：
+
 1. 部署合约。
 2. 调用 `setMyNumber` 函数更新状态。
 3. 等待函数调用在 `hardhat` 模拟的链环境中运行完成。
@@ -102,7 +103,6 @@ npx hardhat test
 
 ![result](./img/2.png)
 
-
 ## zkSync 相关测试
 
 ### 准备工作
@@ -112,7 +112,6 @@ npx hardhat test
 ![zksync-cli](./img/3.png)
 
 我们将用这个命令来启动一个本地的 zkSync 的运行环境，包括一个临时的 zkSync `In-Memory` 节点，这个节点的运行需要依靠 `docker`，所以你本地必须提前安装好了 `docker`，[下载安装](https://www.docker.com/products/docker-desktop/)。 (`docker` 是一种应用容器，你是第一次接触到它的话，就把它看成虚拟机就行，不需要深入，因为 `zksync-cli` 命令会帮我们屏蔽掉使用细节，有兴趣的朋友，可以自行探索 [docker](https://www.docker.com))
-
 
 ### 启动测试环境
 
@@ -152,39 +151,52 @@ import "@matterlabs/hardhat-zksync-chai-matchers";
 ![zksync-test-result](./img/7.png)
 
 ## 使用 Foundry-zksync 进行测试
+
 foundry-zksync 是专门为 zkSync 定制的 Foundry 分支。它扩展了 Foundry 在以太坊应用开发方面的能力，以支持 zkSync，允许在 zkSync 上编译、部署、测试和与智能合约交互。 foundry-zksync 引入了 Foundry 现有 forge 和 cast 工具的 zkforge 和 zkcast 扩展，但专门为 zkSync 使用而设计。
 
 ### 准备工作
-[foundry-zksync](https://github.com/matter-labs/foundry-zksync)是Foundry的专门分支，为zkSync量身定制。它扩展了Foundry对以太坊应用开发的能力，以支持zkSync，允许编译、部署、测试和与zkSync上的智能合约进行交互。foundry-zksync引入了针对zkSync使用而定制的Foundry现有forge和cast工具的扩展——zkforge和zkcast。
 
-安装foundry-zksync需要以下步骤：
+[foundry-zksync](https://github.com/matter-labs/foundry-zksync)是 Foundry 的专门分支，为 zkSync 量身定制。它扩展了 Foundry 对以太坊应用开发的能力，以支持 zkSync，允许编译、部署、测试和与 zkSync 上的智能合约进行交互。foundry-zksync 引入了针对 zkSync 使用而定制的 Foundry 现有 forge 和 cast 工具的扩展——zkforge 和 zkcast。
+
+安装 foundry-zksync 需要以下步骤：
+
 1. 克隆该仓库：
+
 ```shell
 git clone git@github.com:matter-labs/foundry-zksync.git
 ```
-2. 进入foundry-zksync目录并切换到主分支：
+
+2. 进入 foundry-zksync 目录并切换到主分支：
+
 ```shell
-cd foundry-zksync && git checkout main 
+cd foundry-zksync && git checkout main
 ```
-3. 安装zkForge和zkCast：
+
+3. 安装 zkForge 和 zkCast：
+
 ```shell
 cargo install --path ./crates/zkforge --profile local --force --locked
 cargo install --path ./crates/zkcast --profile local --force --locked
 ```
 
 ### 创建测试
+
 安装完成后，使用 `zkforge init test-demo` 初始化一个新项目，该操作将设置新 Foundry 项目的基本结构
 
 进入项目目录，运行 `zkforge test` 来执行测试，你会看到测试结果。
 
 或者使用
+
 ```shell
 zkforge test --match-contract CounterTest --match-test test_Increment
 ```
+
 通过合约或测试名称进行过滤来运行特定的测试
 
-### 将合约部署到zkSync sepolia测试网
-在src目录下创建一个新的合约文件`Greeter.sol`，内容如下：
+### 将合约部署到 zkSync sepolia 测试网
+
+在 src 目录下创建一个新的合约文件`Greeter.sol`，内容如下：
+
 ```solidity
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
@@ -205,14 +217,19 @@ contract Greeter {
     }
 }
 ```
+
 进行编译:
+
 ```shell
 zkforge zkbuild --is-system=true --use 0.8.13 --use-zksolc v1.4.0
 ```
+
 将智能合约部署上链：
+
 ```shell
 zkforge zkcreate src/Greeter.sol:Greeter --constructor-args "Hello zkSync" --private-key <你的钱包私钥> --rpc-url https://sepolia.era.zksync.dev --chain 300
 ```
+
 如图所示，合约部署成功：
 
 ![deploy-result](./img/8.png)
@@ -220,15 +237,14 @@ zkforge zkcreate src/Greeter.sol:Greeter --constructor-args "Hello zkSync" --pri
 合约地址为：`0x5922031e08e04847d62ebd09682fd7cf42ecc80f`
 
 使用`zkcast`与合约进行交互:
+
 ```shell
 zkcast call <合约地址> "greet()(string)" --rpc-url https://sepolia.era.zksync.dev --chain 300
 ```
+
 如图所示，调用成功：
 ![cast-result](./img/9.png)
 
-
-
-
 ## 总结
 
-编写测试程序是智能合约开发中的重要一环，尤其是当你的合约逻辑变得复杂时。本教程简单介绍了如何在 zkSync 合约开发环境中编写和执行测试, 并利用foundry-zksync将合约部署到zkSync测试网。希望这些内容能帮助你更好地理解 zkSync 的合约测试。
+编写测试程序是智能合约开发中的重要一环，尤其是当你的合约逻辑变得复杂时。本教程简单介绍了如何在 zkSync 合约开发环境中编写和执行测试, 并利用 foundry-zksync 将合约部署到 zkSync 测试网。希望这些内容能帮助你更好地理解 zkSync 的合约测试。
