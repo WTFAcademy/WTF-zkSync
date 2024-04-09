@@ -62,7 +62,7 @@ zkSync 上的帐户抽象协议与 EIP4337 非常相似，而 zkSync 期望在�
 - `prepareForPaymaster`（可选）：设置支付的方案，如：ERC-20 代币替代 Gas 支付（参考 [官方案例](https://docs.zksync.io/build/tutorials/smart-contract-development/paymasters/custom-paymaster-tutorial.html)）
 - `executeTransactionFromOutside`（可选）：该函数处理是否从外部发起交易，不是强制实现的，但官方鼓励这样做，因为在优先模式的情况下（例如，如果 Operator 没有响应），则可以考虑从 EOA 帐户开始交易。
 
-  ```jsx
+  ```solidity
   // SPDX-License-Identifier: MIT
   pragma solidity 0.8.20;
 
@@ -112,12 +112,12 @@ zkSync 上的帐户抽象协议与 EIP4337 非常相似，而 zkSync 期望在�
 
 #### 2.3.2. 实现方式：
 
-    `IPaymaster` 是 Paymaster 的接口合约，主要包含 2 个函数。
+`IPaymaster` 是 Paymaster 的接口合约，主要包含 2 个函数。
 
-    1. `validateAndPayForPaymasterTransaction`（必须）：由引导程序调用，以验证支付方是否同意支付交易的费用。如果支付人愿意为交易付款，则此它必须至少发送 `tx.gasprice * tx.gasLimit` 给 Operator。若验证成功，则返回 magic 值 `PAYMASTER_VALIDATION_SUCCESS_MAGIC` 和交易上下文 `context`（最多 1024 字节长度的字节数组，将传递给 `postTransaction` 方法）。
-    2. `postTransaction`（可选）：在事务执行后调用。请注意，与 EIP4337 不同，zkSync 抽象账户不能保证一定会调用此方法：比如事务因 out of gas 错误而失败，则不会调用此方法。它的参数分别为：的上下文 `_context`、交易对象 `_transaction`、交易哈希 `_txHash`，由 EOAs 签名的交易哈希 `_suggestedSignedHash`，交易执行的结果 `_txResult`，以及付款人可能收到 Gas 退款的最大值 `_maxRefundedGas`。
+1. `validateAndPayForPaymasterTransaction`（必须）：由引导程序调用，以验证支付方是否同意支付交易的费用。如果支付人愿意为交易付款，则此它必须至少发送 `tx.gasprice * tx.gasLimit` 给 Operator。若验证成功，则返回 magic 值 `PAYMASTER_VALIDATION_SUCCESS_MAGIC` 和交易上下文 `context`（最多 1024 字节长度的字节数组，将传递给 `postTransaction` 方法）。
+2. `postTransaction`（可选）：在事务执行后调用。请注意，与 EIP4337 不同，zkSync 抽象账户不能保证一定会调用此方法：比如事务因 out of gas 错误而失败，则不会调用此方法。它的参数分别为：的上下文 `_context`、交易对象 `_transaction`、交易哈希 `_txHash`，由 EOAs 签名的交易哈希 `_suggestedSignedHash`，交易执行的结果 `_txResult`，以及付款人可能收到 Gas 退款的最大值 `_maxRefundedGas`。
 
-    ```jsx
+    ```solidity
     contract MyPaymaster is IPaymaster {
         uint256 constant PRICE_FOR_PAYING_FEES = 1;
 
