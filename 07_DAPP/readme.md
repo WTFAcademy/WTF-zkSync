@@ -2,27 +2,27 @@
 
 在本教程中，我们将会完成：
 
-1. 与已创建的 NFT，TOKEN，TOKENPaymaster 合约进行交互
-2. 了解与使用 zkSync 基于 React 技术栈下的开发工具
-3. 构建一个集成 Paymaster 支付的 NFT 铸造页面，以允许用户使用 ERC20 代币支付交易费用
+1. 与已创建的 NFT，TOKEN，TOKENPaymaster 合约进行交互。
+2. 了解与使用 zkSync 基于 React 技术栈下的开发工具。
+3. 构建一个集成 Paymaster 支付的 NFT 铸造页面，以允许用户使用 ERC20 代币支付交易费用。
 
 ![Untitled](img/Untitled.png)
 
 ### 先决条件：
 
 1. 获取 zkSync Sepolia 测试网 ETH：[https://learnweb3.io/faucets/zksync_sepolia/](https://learnweb3.io/faucets/zksync_sepolia/)，[https://docs.zksync.io/build/tooling/network-faucets.html](https://docs.zksync.io/build/tooling/network-faucets.html)
-2. 了解 Paymaster（可查看前面的教程）
+2. 了解 Paymaster（可查看前面的教程）。
 
 ### 相关工具：
 
-1. **nextjs**: 项目使用 React 和 Nextjs 作为前端框架
-2. **ethers5**: zkSync 与主网相同，都可采用 ethers 作为主要合约交互工具库使用
-3. **zksync-ethers5**: 此库在 ethers 基础上封装/附加功能，本教程将会采用其完成我们的 paymaster 集成到铸造 NFT 中。(注：若不使用 zkSync 独特的功能如抽象账户，Paymaster 等与 ethers 无异,直接使用 ethers 即可，不影响以往主网开发使用工具的流程)
-4. **web3modal**: 快捷美观的钱包工具库，提供连接钱包的集成 UI 和相应的逻辑
+1. **nextjs**: 项目使用 React 和 Nextjs 作为前端框架。
+2. **ethers5**: zkSync 与主网相同，都可采用 ethers 作为主要合约交互工具库使用。
+3. **zksync-ethers5**: 此库在 ethers 基础上封装/附加功能，本教程将会采用其完成我们的 paymaster 集成到铸造 NFT 中。(注：若不使用 zkSync 独特的功能如抽象账户，Paymaster 等与 ethers 无异,直接使用 ethers 即可，不影响以往主网开发使用工具的流程)。
+4. **web3modal**: 快捷美观的钱包工具库，提供连接钱包的集成 UI 和相应的逻辑。
 
 ### 配置项目：
 
-1. 下载基础项目和安装依赖
+1. 下载基础项目和安装依赖:
 
    ```jsx
    git clone https://github.com/WTFAcademy/WTF-zkSync.git
@@ -65,9 +65,9 @@
 
 ### 合约简单介绍：
 
-合约都已开源，可以在[https://sepolia.explorer.zksync.io/](https://sepolia.explorer.zksync.io/)找到
+合约都已开源，可以在[https://sepolia.explorer.zksync.io/](https://sepolia.explorer.zksync.io/)找到。
 
-1. [NFT 合约](https://sepolia.explorer.zksync.io/address/0xf599B385E4F1DA0E64b86cf91D51E369bd62b795#contract): 对外暴露 mint 接口给用户执行，无限制
+1. [NFT 合约](https://sepolia.explorer.zksync.io/address/0xf599B385E4F1DA0E64b86cf91D51E369bd62b795#contract): 对外暴露 mint 接口给用户执行，无限制。
 
    ```jsx
     function mint(address recipient, string memory stoneName) public {
@@ -81,7 +81,7 @@
      }
    ```
 
-2. [Token 合约](https://sepolia.explorer.zksync.io/address/0x9Aa5e0Bc9e214050dCaB9510886Ba425c8F2d23e#contract): 普通 ERC20，对外暴露 mint，无限制
+2. [Token 合约](https://sepolia.explorer.zksync.io/address/0x9Aa5e0Bc9e214050dCaB9510886Ba425c8F2d23e#contract): 普通 ERC20，对外暴露 mint，无限制。
 
    ```solidity
    function mint(address _to, uint256 _amount) public returns (bool) {
@@ -90,11 +90,11 @@
    }
    ```
 
-3. [Paymaster 合约](https://sepolia.explorer.zksync.io/address/0x97CB051f8fF92e7936014a29623f8CD5aFA2A825#contract): ERC20 交易支付方案，允许前者 token 的持有者支付 token 作为 gas 手续费支付
+3. [Paymaster 合约](https://sepolia.explorer.zksync.io/address/0x97CB051f8fF92e7936014a29623f8CD5aFA2A825#contract): ERC20 交易支付方案，允许前者 token 的持有者支付 token 作为 gas 手续费支付。
 
 ### 前端开发
 
-1. 启动项目后，我们会看到一个连接钱包和一个初步完成的铸造界面
+1. 启动项目后，我们会看到一个连接钱包和一个初步完成的铸造界面:
 
    ![Untitled](img/Untitled%201.png)
 
@@ -104,7 +104,7 @@
 
    每个 Dapp 应用最开始肯定就是连接钱包了，我们这边将采用 web3modal + ethers5 来完成这个步骤：
 
-   - 首先进入`context/web3-modal.tsx` 完成 web3modal 的初步构建，可以参考[链接](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers)，注意需要前往https://cloud.walletconnect.com注册一个projectid
+   - 首先进入`context/web3-modal.tsx` 完成 web3modal 的初步构建，可以参考[链接](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers)，注意需要前往https://cloud.walletconnect.com 注册一个projectid。
 
      ```jsx
      "use client";
@@ -147,7 +147,7 @@
      }
      ```
 
-   - 将其引用到在最上层使用，进入`app/providers.tsx`
+   - 将其引用到在最上层使用，进入`app/providers.tsx`。
 
      ```jsx
      "use client";
@@ -167,7 +167,7 @@
      }
      ```
 
-   - 入口我们自己定义一下连接按钮样式，再使用`useWeb3Modal`的`open`打开连接钱包弹窗进行钱包连接，切换网络等操作，同时使用 useWeb3ModalAccount 给出的状态`adress`, `isConnected`在 UI 层做出一些交互优化展示
+   - 入口我们自己定义一下连接按钮样式，再使用`useWeb3Modal`的`open`打开连接钱包弹窗进行钱包连接，切换网络等操作，同时使用 useWeb3ModalAccount 给出的状态`adress`, `isConnected`在 UI 层做出一些交互优化展示。
 
      ```tsx
      const StepConnectWallet = ({ next }: { next: () => void }) => {
@@ -211,7 +211,7 @@
      };
      ```
 
-3. 此时已经完成了我们钱包的逻辑处理，接下来我们要深入合约交互逻辑处理，我们要做的就是基于合约完成 3 个 hooks：useToken, usePaymaster, useNFT
+3. 此时已经完成了我们钱包的逻辑处理，接下来我们要深入合约交互逻辑处理，我们要做的就是基于合约完成 3 个 hooks：useToken, usePaymaster, useNFT。
 
    - **usePaymaster**
 
@@ -325,7 +325,7 @@
        }
        ```
 
-     - 在 Paymaster 调用的过程中，是需要用户 token 授权 Paymaster 合约才可调用，我们需要完善增加授权逻辑
+     - 在 Paymaster 调用的过程中，是需要用户 token 授权 Paymaster 合约才可调用，我们需要完善增加授权逻辑。
 
        ```jsx
        // ...其他省略
@@ -474,7 +474,7 @@
        }
        ```
 
-     - 当然我们也要与 token 类似，为了辅助我们页面展示 mint NFT 消耗 Gas 的情况，我们也加入了 getNFTMintEstimate 计算，在 hook 中增加函数
+     - 当然我们也要与 token 类似，为了辅助我们页面展示 mint NFT 消耗 Gas 的情况，我们也加入了 getNFTMintEstimate 计算，在 hook 中增加函数。
 
        ```jsx
 
@@ -495,7 +495,7 @@
 
 4. 前面我们已经完了所有合约交互相关的核心逻辑，接下来我们要把他们运用到页面中，让我们的页面更加完善，我们需完成一下内容，样式部分我已经在模版中完成，只需要使用 hooks 填充数据即可：
 
-   - 打开`app/(main)/step-mint.tsx` 完成初始数据加载
+   - 打开`app/(main)/step-mint.tsx` 完成初始数据加载。
 
      ```jsx
      const StepMint = () => {
@@ -527,7 +527,7 @@
      };
      ```
 
-   - 完成`components/mint-token-modal`逻辑，以铸造满足 Paymaster 使用的 token 金额
+   - 完成`components/mint-token-modal`逻辑，以铸造满足 Paymaster 使用的 token 金额。
 
      ```jsx
      // 1. 使用 useToken hook 获取 tokenBalance,mint等执行函数和状态
@@ -607,7 +607,7 @@
      };
      ```
 
-   - 在 `components/mint-nft-modal` 中使用 useNFT 完成逻辑交互
+   - 在 `components/mint-nft-modal` 中使用 useNFT 完成逻辑交互。
 
      ```jsx
      // 1. 使用 useNft hook 获取 nftBalance,mint等执行函数和状态
@@ -664,7 +664,7 @@
      ```
 
 5. 此时我们已完成了前端开发，我们可以去页面中开始尝试 paymaster 的神奇吧！体验无 Gas 铸造 NFT 的过程。
-   1. 导航到  `http://localhost:3000`  并刷新页面。单击“连接钱包”链接您的 MetaMask 帐户。确保你持有 zksync Sepolia 测试网 ETH
-   2. 查看 paymaster 余额，如果不够可以捐赠一些以满足正常是的运转
-   3. 铸造 Token 用于 NFT 铸造的支付
-   4. 开始 NFT 铸造，可以看到右侧一个签名，完成后即可满足最终的交易执行成功
+   1. 导航到  `http://localhost:3000`  并刷新页面。单击“连接钱包”链接您的 MetaMask 帐户。确保你持有 zksync Sepolia 测试网 ETH。
+   2. 查看 paymaster 余额，如果不够可以捐赠一些以满足正常是的运转。
+   3. 铸造 Token 用于 NFT 铸造的支付。
+   4. 开始 NFT 铸造，可以看到右侧一个签名，完成后即可满足最终的交易执行成功。
