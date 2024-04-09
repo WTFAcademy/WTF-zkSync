@@ -152,11 +152,9 @@ import "@matterlabs/hardhat-zksync-chai-matchers";
 
 ## 使用 Foundry-zksync 进行测试
 
-foundry-zksync 是专门为 zkSync 定制的 Foundry 分支。它扩展了 Foundry 在以太坊应用开发方面的能力，以支持 zkSync，允许在 zkSync 上编译、部署、测试和与智能合约交互。 foundry-zksync 引入了 Foundry 现有 forge 和 cast 工具的 zkforge 和 zkcast 扩展，但专门为 zkSync 使用而设计。
+[foundry-zksync](https://github.com/matter-labs/foundry-zksync)是 Foundry 的专门分支，为 zkSync 量身定制。它扩展了 Foundry 在以太坊应用开发方面的能力，以支持 zkSync，允许编译、部署、测试和与 zkSync 上的智能合约进行交互。foundry-zksync 引入了 Foundry 现有 forge 和 cast 工具的 zkforge 和 zkcast 扩展，但专门为 zkSync 使用而设计。
 
 ### 准备工作
-
-[foundry-zksync](https://github.com/matter-labs/foundry-zksync)是 Foundry 的专门分支，为 zkSync 量身定制。它扩展了 Foundry 对以太坊应用开发的能力，以支持 zkSync，允许编译、部署、测试和与 zkSync 上的智能合约进行交互。foundry-zksync 引入了针对 zkSync 使用而定制的 Foundry 现有 forge 和 cast 工具的扩展——zkforge 和 zkcast。
 
 安装 foundry-zksync 需要以下步骤：
 
