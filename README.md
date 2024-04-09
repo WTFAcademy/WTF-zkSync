@@ -14,15 +14,13 @@ Community: [Discord](https://discord.gg/5akcruXrsk)
 
 **第 3 讲：抽象账户（AA）**：【[教程](./03_AA/readme.md)】
 
-## TODO
+**第 4 讲：开发工具**：【[教程](./04_Toolings/readme.md)】
 
-**第 4 讲：开发工具**
+**第 5 讲：合约开发**：【[教程](./05_Developing/readme.md)】
 
-**第 5 讲：合约开发**
+**第 6 讲：合约测试**：【[教程](./06_Testing/readme.md)】
 
-**第 6 讲：合约测试**
-
-**第 7 讲：Dapp 开发：Pay Master**
+**第 7 讲：Dapp 开发：Pay Master**：【[教程](./07_DAPP/readme.md)】
 
 ## Reference
 
