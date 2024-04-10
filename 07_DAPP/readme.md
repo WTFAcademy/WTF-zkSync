@@ -167,7 +167,7 @@
      }
      ```
 
-   - 入口我们自己定义一下连接按钮样式，再使用`useWeb3Modal`的`open`打开连接钱包弹窗进行钱包连接，切换网络等操作，同时使用 useWeb3ModalAccount 给出的状态`adress`, `isConnected`在 UI 层做出一些交互优化展示
+   - 入口我们自己定义一下连接按钮样式，再使用`useWeb3Modal`的`open`打开连接钱包弹窗进行钱包连接，切换网络等操作，同时使用 useWeb3ModalAccount 给出的状态`address`, `isConnected`在 UI 层做出一些交互优化展示
 
      ```tsx
      const StepConnectWallet = ({ next }: { next: () => void }) => {
