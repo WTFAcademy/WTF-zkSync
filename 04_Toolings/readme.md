@@ -211,6 +211,10 @@ Ethereum execute hash: in progress
 
 用于快速创建项目（前端、智能合约和脚本）。
 
+```
+npx zksync-cli create
+```
+
 ![create](./img/cli03.png)
 
 #### 3.6 wallet
