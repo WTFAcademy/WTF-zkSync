@@ -1,11 +1,11 @@
 ---
 title: 1. Layer 2 Basics
 tags:
-   -ethereum
+   - ethereum
    - layer 2
    - rollup
-   -zk
-   -zksync
+   - zk
+   - zksync
 --- 
 
 # WTF zkSync minimalist introduction: 1. Layer 2 basics
