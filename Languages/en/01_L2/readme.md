@@ -6,7 +6,7 @@ tags:
    - rollup
    -zk
    -zksync
----
+--- 
 
 # WTF zkSync minimalist introduction: 1. Layer 2 basics
 
