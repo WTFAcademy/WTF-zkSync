@@ -474,7 +474,7 @@ The contracts are all open source and can be found at [https://sepolia.explorer.
 
 - Of course, we have to be similar to token. In order to help our page display the gas consumption of mint NFT, we also added getNFTMintEstimate calculation and added a function in the hook.
 
-        ```jsx
+   ```jsx
 
         const getNFTMintEstimate = async () => {
             const ethersProvider = new Web3Provider(walletProvider!)
@@ -606,7 +606,7 @@ The contracts are all open source and can be found at [https://sepolia.explorer.
 
 - Use useNFT in `components/mint-nft-modal` to complete logical interaction
 
-      ```jsx
+  ```jsx
       // 1. Use useNft hook to obtain nftBalance, mint and other execution functions and status
       // 2. Calculate fee, GasPrice, actual expenditure
       // 3. Use the Checkout component to display payment information
