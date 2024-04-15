@@ -14,9 +14,9 @@ Community: [Discord](https://discord.gg/5akcruXrsk)
 
 **第 3 讲：抽象账户（AA）**：【[教程](./03_AA/readme.md)】
 
-## TODO
+**第 4 讲：开发工具**：【[教程](./04_Toolings/readme.md)】
 
-**第 4 讲：开发工具**
+## TODO
 
 **第 5 讲：合约开发**
 
