@@ -16,11 +16,13 @@ Community: [Discord](https://discord.gg/5akcruXrsk)
 
 **第 4 讲：开发工具**：【[教程](./04_Toolings/readme.md)】
 
-**第 5 讲：合约开发**：【[教程](./05_Developing/readme.md)】
+## TODO
 
-**第 6 讲：合约测试**：【[教程](./06_Testing/readme.md)】
+**第 5 讲：合约开发**
 
-**第 7 讲：Dapp 开发：Pay Master**：【[教程](./07_Dapp/readme.md)】
+**第 6 讲：合约测试**
+
+**第 7 讲：Dapp 开发：Pay Master**
 
 ## Reference
 
