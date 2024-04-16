@@ -35,10 +35,11 @@ tags:
 
 ### 相关工具：
 
-1. **nextjs**: 项目使用 React 和 Nextjs 作为前端框架
-2. **ethers5**: zkSync 与主网相同，都可采用 ethers 作为主要合约交互工具库使用
-3. **zksync-ethers5**: 此库在 ethers 基础上封装/附加功能，本教程将会采用其完成我们的 paymaster 集成到铸造 NFT 中。(注：若不使用 zkSync 独特的功能如抽象账户，Paymaster 等与 ethers 无异,直接使用 ethers 即可，不影响以往主网开发使用工具的流程)
-4. **web3modal**: 快捷美观的钱包工具库，提供连接钱包的集成 UI 和相应的逻辑
+1. **nodejs**: 版本v18
+2. **nextjs**: 项目使用 React 和 Nextjs 作为前端框架
+3. **ethers5**: zkSync 与主网相同，都可采用 ethers 作为主要合约交互工具库使用
+4. **zksync-ethers5**: 此库在 ethers 基础上封装/附加功能，本教程将会采用其完成我们的 paymaster 集成到铸造 NFT 中。(注：若不使用 zkSync 独特的功能如抽象账户，Paymaster 等与 ethers 无异,直接使用 ethers 即可，不影响以往主网开发使用工具的流程)
+5. **web3modal**: 快捷美观的钱包工具库，提供连接钱包的集成 UI 和相应的逻辑
 
 ### 配置项目：
 
