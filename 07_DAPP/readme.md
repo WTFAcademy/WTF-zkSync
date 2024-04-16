@@ -124,7 +124,7 @@ tags:
 
    每个 Dapp 应用最开始肯定就是连接钱包了，我们这边将采用 web3modal + ethers5 来完成这个步骤：
 
-   - 首先进入`context/web3-modal.tsx` 完成 web3modal 的初步构建，可以参考[链接](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers)，注意需要前往[注册](https://cloud.walletconnect.com) 注册一个 projectid
+   - 首先进入`context/web3-modal.tsx` 完成 web3modal 的初步构建，可以参考[链接](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers)，注意需要前往[Wallet Connect](https://cloud.walletconnect.com) 注册一个 projectid
 
      ```jsx
      "use client";
@@ -683,7 +683,7 @@ tags:
      };
      ```
 
-5. 此时我们已完成了前端开发，我们可以去页面中开始尝试 paymaster 的神奇吧！体验无 Gas 铸造 NFT 的过程。
+5. 此时我们已完成了前端开发，我们可以去页面中开始尝试 paymaster 的神奇吧！体验无 Gas 铸造 NFT 的过程。Example 地址：[demo](../Dapp_template/)
    1. 导航到  `http://localhost:3000`  并刷新页面。单击“连接钱包”链接您的 MetaMask 帐户。确保你持有 zksync Sepolia 测试网 ETH
    2. 查看 paymaster 余额，如果不够可以捐赠一些以满足正常是的运转
    3. 铸造 Token 用于 NFT 铸造的支付
