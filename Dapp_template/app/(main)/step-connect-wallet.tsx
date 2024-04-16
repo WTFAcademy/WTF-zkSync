@@ -1,27 +1,46 @@
-"use client";
+import { Icons } from "@/components/icons";
+import { truncate } from "@/lib/utils";
+import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers5/react";
+import { useEffect } from "react";
 
-import {Icons} from "@/components/icons";
-
-const StepConnectWallet = ({next}: {next: () => void}) => {
-
-    // 1. 使用web3modal hook获取钱包连接状态
-    // 2. 若未连接点击连接钱包按钮，打开链接
-    // 3. 若已连接执行next跳到下一步
+const StepConnectWallet = ({ next }: { next: () => void }) => {
+    const { open } = useWeb3Modal();
+    const { address, isConnected } = useWeb3ModalAccount();
 
     const handleClick = () => {
-        next();
-    }
+        open().catch(console.error);
+    };
+
+    useEffect(() => {
+        if (isConnected) {
+            next();
+        }
+    }, [isConnected]);
 
     return (
         <div className="px-10 py-8 bg-[#ffffff] rounded-lg shadow flex items-center justify-center">
-            <button className="rounded-lg border-px border-border" onClick={handleClick}>
+            <button
+                className="rounded-lg border-px border-border"
+                onClick={handleClick}
+            >
                 <div className="flex items-center gap-3 justify-center">
                     <Icons.wallet className="w-4 h-4" />
-                    <span>连接钱包</span>
+                    <span>
+                        {isConnected ? (
+                            <span className="flex items-center gap-2">
+                                <span>已连接</span>
+                                <span className="text-[#000000] text-sm">
+                                    {truncate(address!)}
+                                </span>
+                            </span>
+                        ) : (
+                            "连接钱包"
+                        )}
+                    </span>
                 </div>
             </button>
         </div>
-    )
-}
+    );
+};
 
 export default StepConnectWallet;

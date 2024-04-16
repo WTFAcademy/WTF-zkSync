@@ -6,14 +6,13 @@ import usePaymaster from "@/hooks/use-paymaster";
 import useToken from "@/hooks/use-token";
 
 const StepMint = () => {
+
     const { paymasterBalance } = usePaymaster();
-    const { tokenBalance } = useToken();
+    const {tokenBalance} = useToken();
 
     return (
         <div className="px-10 py-8 bg-[#1E1E1E] rounded-lg shadow text-[#ffffff] flex flex-col gap-4">
-            <div className="text-[#29BC38] font-bold text-xl">
-                WTF zkSync NFT Mint
-            </div>
+            <div className="text-[#29BC38] font-bold text-xl">WTF zkSync NFT Mint</div>
             <div className="space-y-3">
                 <div className="space-x-1">
                     <span className="text-gray-400">Paymaster 余额：</span>
@@ -30,7 +29,7 @@ const StepMint = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default StepMint;
