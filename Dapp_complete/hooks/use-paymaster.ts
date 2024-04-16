@@ -1,8 +1,8 @@
-import { PAYMASTER_ADDRESS, TOKEN_ADDRESS } from "@/constants/contract"
-import { useWeb3ModalAccount, useWeb3ModalProvider } from "@web3modal/ethers5/react"
+import { PAYMASTER_ADDRESS, TOKEN_ADDRESS } from "@/constants/contract";
+import { useWeb3ModalAccount, useWeb3ModalProvider } from "@web3modal/ethers5/react";
+import { useQuery } from "react-query";
 import { Web3Provider, utils } from "zksync-ethers";
-import { ethers } from "ethers"
-import { useQuery } from "react-query"
+import { BigNumber, ethers } from "ethers";
 
 const usePaymaster = () => {
     const { isConnected } = useWeb3ModalAccount()
@@ -36,4 +36,4 @@ const usePaymaster = () => {
     }
 }
 
-export default usePaymaster;
+export default usePaymaster

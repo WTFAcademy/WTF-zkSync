@@ -18,15 +18,15 @@ const MintTokenModal = () => {
         canNonGas,
         isAllowancePaymaster,
         approvePaymaster,
-        isApprovePaymasterLoading,
+        isApprovePaymasterLoading
     } = useToken();
 
     const {
         data: tokenMintEstimate,
-        isLoading: isTokenMintEstimateLoading,
+        isLoading: isTokenMintEstimateLoading
     } = useQuery("tokenMintEstimate", getTokenMintEstimate, {
-        enabled: openModal,
-    });
+        enabled: openModal
+    })
 
     return (
         <Dialog open={openModal} onOpenChange={setOpenModal}>
@@ -35,16 +35,12 @@ const MintTokenModal = () => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>
-                        领取支付代币 {canNonGas && "(无GAS版)"}
-                    </DialogTitle>
+                    <DialogTitle>领取支付代币 {canNonGas && "(无GAS版)"}</DialogTitle>
                     <DialogDescription>用于支付手续费的代币</DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="text-sm">代币合约地址：{TOKEN_ADDRESS}</div>
-                    <div className="text-sm">
-                        当前账户代币余额：{tokenBalance || 0} WTF
-                    </div>
+                    <div className="text-sm">当前账户代币余额：{tokenBalance || 0} WTF</div>
                     <Checkout
                         gas={tokenMintEstimate?.gas}
                         gasPrice={tokenMintEstimate?.gasPrice}
@@ -54,29 +50,27 @@ const MintTokenModal = () => {
                     />
                 </div>
                 <DialogFooter>
-                    {isAllowancePaymaster ? (
-                        <Button
-                            size="sm"
-                            className="w-full"
-                            disabled={isMintLoading}
-                            onClick={() => mint()}
-                        >
-                            开始执行
-                        </Button>
-                    ) : (
-                        <Button
-                            size="sm"
-                            className="w-full"
-                            disabled={isApprovePaymasterLoading}
-                            onClick={() => approvePaymaster()}
-                        >
-                            授权代币作为手续费支付
-                        </Button>
-                    )}
+                    {
+                        isAllowancePaymaster ? (
+                            <Button
+                                size="sm"
+                                className="w-full"
+                                disabled={isMintLoading}
+                                onClick={() => mint()}
+                            >开始执行</Button>
+                        ) : (
+                            <Button
+                                size="sm"
+                                className="w-full"
+                                disabled={isApprovePaymasterLoading}
+                                onClick={() => approvePaymaster()}
+                            >授权代币作为手续费支付</Button>
+                        )
+                    }
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    );
-};
+    )
+}
 
 export default MintTokenModal;
