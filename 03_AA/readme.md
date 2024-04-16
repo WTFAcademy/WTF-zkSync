@@ -111,7 +111,7 @@ zkSync 上的帐户抽象协议与 EIP4337 非常相似，而 zkSync 期望在�
 
 ### 2.3 Paymaster：zkSync 中的支付中继
 
-在 zkSync 的账户抽象化框架内，`Paymaster` 起着中心角色，使得交易发起者可以通过第三方支付交易费用，或使用非原生代币（如 ERC-20 代币）支付费用。
+在 zkSync 的账户抽象化框架内，`Paymaster` 作为中心角色，使得交易发起者可以通过第三方支付交易费用，或使用非原生代币（如 ERC-20 代币）支付费用。
 
 #### 2.3.1. 工作原理：
 
@@ -168,7 +168,7 @@ zkSync 上的帐户抽象协议与 EIP4337 非常相似，而 zkSync 期望在�
 
 - **用户免费交易**：对于希望吸引用户参与的应用，可以通过 `Paymaster` 支付用户交易费用，降低用户参与门槛。
 - **代币支付交易费**：用户可以使用特定的代币支付交易费，而 `Paymaster` 负责将这些代币转换成网络接受的费用形式。
-- NFT 权限给予：想象一下持有某个 NFT 时，执行交易没有手续费的特权，可以参考官方具有想象力的 [Demo](https://docs.zksync.io/build/tutorials/dapp-development/gated-nft-paymaster-tutorial.html)
+- **NFT 权限给予**：想象一下持有某个 NFT 时，执行交易没有手续费的特权，可以参考官方具有想象力的 [Demo](https://docs.zksync.io/build/tutorials/dapp-development/gated-nft-paymaster-tutorial.html)
 - **企业和应用赞助**：企业或应用开发者可以作为 `Paymaster`，为其用户群体支付交易费用，提升用户体验。
 
 ## 3. zkSync 账户抽象的应用

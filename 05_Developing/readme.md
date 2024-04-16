@@ -563,4 +563,4 @@ export default async function (hre: HardhatRuntimeEnvironment) {
 
 ![区块链浏览器](./img/deploy.png)
 
-至此整个合约部分完成了，在本教程中，我们学习了如何在 zkSync Era 上设置 paymaster 合约 ， 我们创建了一个 `erc20`，并制定了 `paymaster` 合约，以便它接受该代币的单个单位作为费用。
+至此整个合约部分完成了，在本教程中，我们学习了如何在 zkSync Era 上设置 paymaster 合约 ， 我们创建了一个 `erc20`，并制定了 `paymaster` 合约，以便它接受该代币作为费用。
