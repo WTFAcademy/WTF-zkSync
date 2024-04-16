@@ -8,7 +8,7 @@ tags:
 
 这个系列教程帮助开发者入门 zkSync 开发。
 
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy\_](https://twitter.com/WTFAcademy_)
+推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_) 
 
 社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy) 所有代码和教程开源在 github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
@@ -75,6 +75,9 @@ zkSync 背后的公司 [Matter labs](https://matter-labs.io/) 总部位于德国
 
 - 开发工具
   - zkSync 2.0 配备了包括 CLI（命令行界面）和 SDK（软件开发工具包）等开发者工具，使开发者能够更轻松地构建和部署基于 zkSync 的应用程序。
+    
+- 预编译
+  - zkSync 2.0 支持包括 ecrecover 和 sha256（加上 keccak256）以及 lambdaclass 正在开发的预编译，即 ecAdd、ecMul 和 modexp（加上 ecPairing）在内的上海协议版本的预编译合约。
 
 ## 2. zkSync 的优势
 

@@ -5,14 +5,20 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useState } from "react";
 import { Button } from "./ui/button";
 import Checkout from "./checkout";
+import useNft from "@/hooks/use-nft";
+import useToken from "@/hooks/use-token";
+import { useQuery } from "react-query";
 
 const MintNFTModal = () => {
     const [openModal, setOpenModal] = useState<boolean>(false);
+    const { nftBalance, getNFTMintEstimate, mint, isMintLoading } = useNft();
 
-    // 1. 使用 useNft hook 获取 nftBalance,mint等执行函数和状态
-    // 2. 计算fee, GasPrice, 实际支出
-    // 3. 使用Checkout组件展示支付信息
-    // 4. 新增执行按钮    
+    const { canNonGas } = useToken();
+
+    const { data: nftMintEstimate, isLoading: isTokenMintEstimateLoading } =
+        useQuery("nftMintEstimate", getNFTMintEstimate, {
+            enabled: openModal,
+        });
 
     return (
         <Dialog open={openModal} onOpenChange={setOpenModal}>
@@ -21,17 +27,17 @@ const MintNFTModal = () => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>铸造NFT</DialogTitle>
-                    <DialogDescription>可使用WTF测试币作为手续费铸造NFT</DialogDescription>
+                    <DialogTitle>铸造NFT {canNonGas && "(无GAS版)"}</DialogTitle>
+                    <DialogDescription>可使用WTF测试币作为手续费</DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="text-sm">NFT合约地址：{NFT_ADDRESS}</div>
-                    <div className="text-sm">当前账户持有NFT：0</div>
+                    <div className="text-sm">当前账户持有NFT：{nftBalance || 0}</div>
                     <Checkout
-                        gas={"0"}
-                        gasPrice={"0"}
-                        cost={"0"}
-                        nonGas={false}
+                        gas={nftMintEstimate?.gas}
+                        gasPrice={nftMintEstimate?.gasPrice}
+                        cost={nftMintEstimate?.cost}
+                        nonGas={canNonGas}
                         transaction="Mint (amount = 1)"
                     />
                 </div>
@@ -39,11 +45,15 @@ const MintNFTModal = () => {
                     <Button
                         size="sm"
                         className="w-full"
-                    >开始执行</Button>
+                        disabled={isMintLoading}
+                        onClick={() => mint()}
+                    >
+                        开始执行
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    )
-}
+    );
+};
 
 export default MintNFTModal;
