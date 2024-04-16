@@ -47,7 +47,7 @@ tags:
    ```jsx
    git clone https://github.com/WTFAcademy/WTF-zkSync.git
    cd WTF-zkSync/Dapp_template
-   // pnpm  i  or yarn install or npm install
+   pnpm install // 或 yarn install 或 npm install
    ```
 
 2. 目录结构：
@@ -171,6 +171,7 @@ tags:
 
      ```jsx
      // Dapp_template/app/providers.tsx
+
      "use client";
      import { Web3ModalProvider } from "@/context/web3-modal";
      import React, { ReactNode } from "react";
@@ -187,7 +188,7 @@ tags:
      }
      ```
 
-   - 入口我们自己定义一下连接按钮样式，再使用`useWeb3Modal`的`open`打开连接钱包弹窗进行钱包连接，切换网络等操作，同时使用 useWeb3ModalAccount 给出的状态`address`, `isConnected`在 UI 层做出一些交互优化展示
+   - 在`app/(main)/step-connect-wallet.tsx`中我们自己定义一下连接按钮样式，使用`useWeb3Modal`的`open`打开连接钱包弹窗进行钱包连接，切换网络等操作，同时使用 `useWeb3ModalAccount` 给出的状态`address`, `isConnected`在 UI 层做出一些交互优化展示
 
      ```tsx
      // Dapp_template/app/(main)/step-connect-wallet.tsx
@@ -235,7 +236,7 @@ tags:
 
 3. 此时已经完成了我们钱包的逻辑处理，接下来我们要深入合约交互逻辑处理，我们要做的就是基于合约完成 3 个 hooks：useToken, usePaymaster, useNFT
 
-   - **usePaymaster**
+   - **usePaymaster** (`hooks/use-paymaster.ts`)
 
      - 我们将会在此 hook 中完成 paymaster 的部分参数组装，以便快速运用到其他的合约调用中，并且获取 paymaster 余额，来告知用户是否仍然可以继续使用 token 替代 gas 支付， 以下关键代码中我们采用 type 为`ApprovalBased` 来完成 Token 的逻辑处理，并且设定`minimalAllowance`为指定值，此处表示支付的 Token 数量用于替换手续费支出，这里实际上会更具具体的需求还给出动态的值，我们为了简单处理每笔交易都只需要支出 1 个 token 即可：
        ```jsx
@@ -286,7 +287,7 @@ tags:
        }
        ```
 
-   - **useToken**
+   - **useToken** (`hooks/use-token.ts`)
 
      - 该合约我们首先需要完成获取 token 余额，mint 用于支付替代手续费，参考代码内容：
 
@@ -351,9 +352,10 @@ tags:
        }
        ```
 
-     - 在 Paymaster 调用的过程中，是需要用户 token 授权 Paymaster 合约才可调用，我们需要完善增加授权逻辑
+     - 在 Paymaster 调用的过程中，是需要用户 token 授权 Paymaster 合约才可调用，我们需要在前面的代码(`use-token`)中完善增加授权逻辑
 
        ```jsx
+       // Dapp_template/hooks/use-token.ts
        // ...其他省略
 
        const {data: allowance, refetch: refetchAllowance} = useQuery(["tokenAllowance", address], async () => {
@@ -393,36 +395,39 @@ tags:
        }
        ```
 
-     - 我们期望页面能够展示 Token Mint 环节产生的 Gas 消耗情况，以及利用余额判断是否满足 paymaster 调用（paymaster 限制了最少需要 1 个 token），我们增加两个内容：
+     - 我们期望页面能够展示 Token Mint 环节产生的 Gas 消耗情况，以及利用余额判断是否满足 paymaster 调用（paymaster 限制了最少需要 1 个 token），我们继续基于前面代码(`use-token`)增加以下两个内容：
 
        ```jsx
-       const getTokenMintEstimate = async () => {
-           const ethersProvider = new Web3Provider(walletProvider!)
-           const erc20Contract = contract!;
-           const gasEstimate = await erc20Contract.estimateGas.mint(address, ethers.utils.parseEther("1000"));
-           const gasPrice = await ethersProvider.getGasPrice();
-           const cost = gasPrice.mul(gasEstimate);
+        // Dapp_template/hooks/use-token.ts
 
-           return {
-               gas: ethers.utils.formatEther(gasEstimate).toString(),
-               gasPrice: ethers.utils.formatEther(gasPrice).toString(),
-               cost: ethers.utils.formatEther(cost).toString()
-           }
-       }
+        const getTokenMintEstimate = async () => {
+            const ethersProvider = new Web3Provider(walletProvider!)
+            const erc20Contract = contract!;
+            const gasEstimate = await erc20Contract.estimateGas.mint(address, ethers.utils.parseEther("1000"));
+            const gasPrice = await ethersProvider.getGasPrice();
+            const cost = gasPrice.mul(gasEstimate);
 
-       return {
-       	//...
-       	getTokenMintEstimate,
-       	canNonGas: tokenBalance ? ethers.utils.parseEther(tokenBalance!) > ethers.utils.parseEther("1") : false
-       }
+            return {
+                gas: ethers.utils.formatEther(gasEstimate).toString(),
+                gasPrice: ethers.utils.formatEther(gasPrice).toString(),
+                cost: ethers.utils.formatEther(cost).toString()
+            }
+        }
+
+        return {
+          //...
+          getTokenMintEstimate,
+          canNonGas: tokenBalance ? ethers.utils.parseEther(tokenBalance!) > ethers.utils.parseEther("1") : false
+        }
        ```
 
-   - **useNFT**
+   - **useNFT** (`hooks/use-nft.ts`)
 
      - NFT 合约中我们需要完成 NFT 持有数量查询，mint NFT 逻辑，同时 mint 时，我们集成了 paymaster 的支付手段，首先我们需要关注的是我们采用的是 zksync-ethers 的`Contract`和`Web3Provider` 这是官方扩展的类，里面涉及了抽象账户，Paymaster 逻辑等 zksync 独特的功能，我们这边需要用到 paymaster，故我们不能直接采用 ethers 里面构建合约；其次我们在调用合约的时候传入`customData`即可，这里我们在前面`usePaymaster`中已经提及，这是调用 paymaster 的关键：
 
        ```jsx
-       // 截取代码组合，不可运行
+       // 伪代码，不可运行，非use-nft.ts中的代码
+
        import { Contract, Web3Provider } from "zksync-ethers";
        import { ethers } from "ethers";
 
@@ -443,10 +448,10 @@ tags:
        }
        ```
 
-     - 将其完善到 hook 中：
+     - 创建`hooks/use-nft.ts`，根据关键代码写入内容如下：
 
        ```jsx
-        // Dapp_template/hooks/use-token.ts
+        // Dapp_template/hooks/use-nft.ts
 
        const useNft = () => {
            const { isConnected, address } = useWeb3ModalAccount()
@@ -502,23 +507,31 @@ tags:
        }
        ```
 
-     - 当然我们也要与 token 类似，为了辅助我们页面展示 mint NFT 消耗 Gas 的情况，我们也加入了 getNFTMintEstimate 计算，在 hook 中增加函数
+     - 当然我们也要与 token 类似，为了辅助我们页面展示 mint NFT 消耗 Gas 的情况，我们也加入了 getNFTMintEstimate 计算，在前者代码(`use-nft`)中增加函数
 
        ```jsx
+        // Dapp_template/hooks/use-nft.ts
+        
+        // ...其他省略
 
-       const getNFTMintEstimate = async () => {
-           const ethersProvider = new Web3Provider(walletProvider!)
-           const nftContract = contract!;
-           const gasEstimate = await nftContract.estimateGas.mint(address, "Space Stone");
-           const gasPrice = await ethersProvider.getGasPrice();
-           const cost = gasPrice.mul(gasEstimate);
+        const getNFTMintEstimate = async () => {
+            const ethersProvider = new Web3Provider(walletProvider!)
+            const nftContract = contract!;
+            const gasEstimate = await nftContract.estimateGas.mint(address, "Space Stone");
+            const gasPrice = await ethersProvider.getGasPrice();
+            const cost = gasPrice.mul(gasEstimate);
 
-           return {
-               gas: ethers.utils.formatEther(gasEstimate).toString(),
-               gasPrice: ethers.utils.formatEther(gasPrice).toString(),
-               cost: ethers.utils.formatEther(cost).toString()
-           }
-       }
+            return {
+                gas: ethers.utils.formatEther(gasEstimate).toString(),
+                gasPrice: ethers.utils.formatEther(gasPrice).toString(),
+                cost: ethers.utils.formatEther(cost).toString()
+            }
+        }
+
+        return {
+            // ...其他省略
+            getNFTMintEstimate
+        }
        ```
 
 4. 前面我们已经完了所有合约交互相关的核心逻辑，接下来我们要把他们运用到页面中，让我们的页面更加完善，我们需完成一下内容，样式部分我已经在模版中完成，只需要使用 hooks 填充数据即可：
