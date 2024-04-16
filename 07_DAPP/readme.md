@@ -9,12 +9,12 @@ tags:
   - dapp
 ---
 
-# WTF zkSync极简入门: 7. Dapp开发教程
+# WTF zkSync 极简入门: 7. Dapp 开发教程
 
 这个系列教程帮助开发者入门 zkSync 开发。
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_) 
+推特：[@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy\_](https://twitter.com/WTFAcademy_)
 
-社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy) 
+社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy)
 
 所有代码和教程开源在 github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
@@ -124,7 +124,7 @@ tags:
 
    每个 Dapp 应用最开始肯定就是连接钱包了，我们这边将采用 web3modal + ethers5 来完成这个步骤：
 
-   - 首先进入`context/web3-modal.tsx` 完成 web3modal 的初步构建，可以参考[链接](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers)，注意需要前往https://cloud.walletconnect.com注册一个projectid
+   - 首先进入`context/web3-modal.tsx` 完成 web3modal 的初步构建，可以参考[链接](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers)，注意需要前往[注册](https://cloud.walletconnect.com) 注册一个 projectid
 
      ```jsx
      "use client";
