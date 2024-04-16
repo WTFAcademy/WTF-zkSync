@@ -46,8 +46,8 @@ tags:
 
    ```jsx
    git clone https://github.com/WTFAcademy/WTF-zkSync.git
-   cd WTF-zkSync/07_DAPP/template
-   pnpm i / yarn / npm install
+   cd WTF-zkSync/Dapp_template
+   // pnpm  i  or yarn install or npm install
    ```
 
 2. 目录结构：
@@ -127,8 +127,8 @@ tags:
    - 首先进入`context/web3-modal.tsx` 完成 web3modal 的初步构建，可以参考[链接](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers)，注意需要前往[Wallet Connect](https://cloud.walletconnect.com) 注册一个 projectid
 
      ```jsx
+     // Dapp_template/context/web3-modal.tsx
      "use client";
-
      import { createWeb3Modal, defaultConfig } from "@web3modal/ethers5/react";
 
      // 1. Get projectId at https://cloud.walletconnect.com
@@ -170,8 +170,8 @@ tags:
    - 将其引用到在最上层使用，进入`app/providers.tsx`
 
      ```jsx
+     // Dapp_template/app/providers.tsx
      "use client";
-
      import { Web3ModalProvider } from "@/context/web3-modal";
      import React, { ReactNode } from "react";
      import { QueryClient, QueryClientProvider } from "react-query";
@@ -190,6 +190,8 @@ tags:
    - 入口我们自己定义一下连接按钮样式，再使用`useWeb3Modal`的`open`打开连接钱包弹窗进行钱包连接，切换网络等操作，同时使用 useWeb3ModalAccount 给出的状态`address`, `isConnected`在 UI 层做出一些交互优化展示
 
      ```tsx
+     // Dapp_template/app/(main)/step-connect-wallet.tsx
+
      const StepConnectWallet = ({ next }: { next: () => void }) => {
        const { open } = useWeb3Modal();
        const { address, isConnected } = useWeb3ModalAccount();
@@ -249,6 +251,8 @@ tags:
      - 完整代码：
 
        ```jsx
+        // Dapp_template/hooks/use-paymaster.ts
+
        const usePaymaster = () => {
            const { isConnected } = useWeb3ModalAccount()
            const { walletProvider } = useWeb3ModalProvider()
@@ -287,6 +291,8 @@ tags:
      - 该合约我们首先需要完成获取 token 余额，mint 用于支付替代手续费，参考代码内容：
 
        ```jsx
+        // Dapp_template/hooks/use-token.ts
+
        const useToken = () => {
            const { isConnected, address } = useWeb3ModalAccount()
            const { walletProvider } = useWeb3ModalProvider()
@@ -440,6 +446,8 @@ tags:
      - 将其完善到 hook 中：
 
        ```jsx
+        // Dapp_template/hooks/use-token.ts
+
        const useNft = () => {
            const { isConnected, address } = useWeb3ModalAccount()
            const { walletProvider } = useWeb3ModalProvider()
@@ -518,6 +526,8 @@ tags:
    - 打开`app/(main)/step-mint.tsx` 完成初始数据加载
 
      ```jsx
+     // Dapp_template/app/(main)/step-mint.tsx
+
      const StepMint = () => {
        const { paymasterBalance } = usePaymaster();
        const { tokenBalance } = useToken();
@@ -550,6 +560,8 @@ tags:
    - 完成`components/mint-token-modal`逻辑，以铸造满足 Paymaster 使用的 token 金额
 
      ```jsx
+     // Dapp_template/components/mint-token-modal.tsx
+
      // 1. 使用 useToken hook 获取 tokenBalance,mint等执行函数和状态
      // 2. 计算fee, GasPrice, 实际支出
      // 3. 使用Checkout组件展示支付信息
@@ -630,6 +642,8 @@ tags:
    - 在 `components/mint-nft-modal` 中使用 useNFT 完成逻辑交互
 
      ```jsx
+     // Dapp_template/components/mint-nft-modal.tsx
+
      // 1. 使用 useNft hook 获取 nftBalance,mint等执行函数和状态
      // 2. 计算fee, GasPrice, 实际支出
      // 3. 使用Checkout组件展示支付信息
