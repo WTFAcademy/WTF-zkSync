@@ -61,7 +61,7 @@ zkSync 背后的公司 [Matter labs](https://matter-labs.io/) 总部位于德国
 
   - zkSync 1.0 提供了简化的支付和资产转移场景，并不支持以太坊虚拟机兼容的智能合约。
 
-  - zkSync 2.0 提供了对 EVM 兼容智能合约的完全支持，开发者可以在 zkSync 2.0 上轻松地部署以太坊智能合约 。
+  - zkSync 2.0 提供了对 EVM 兼容智能合约的完全支持，开发者可以在 zkSync 2.0 上轻松地部署以太坊智能合约。
 
 - 账户抽象
 
@@ -69,7 +69,7 @@ zkSync 背后的公司 [Matter labs](https://matter-labs.io/) 总部位于德国
 
 - 可组合性
 
-  - zkSync 1.0 仅支持有限的跨合约交互
+  - zkSync 1.0 仅支持有限的跨合约交互。
 
   - zkSync 2.0 通过保留关键 EVM 功能（如智能合约可组合性）提高了协议间互操作性，这使得 zkSync 2.0 更适合构建复杂的去中心化金融（DeFi）应用程序。
 
