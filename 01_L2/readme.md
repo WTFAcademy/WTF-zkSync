@@ -63,6 +63,7 @@ L1 网络的主要特点和功能包括：
 - 链下扩容：
   - 状态通道（State Channel）：指用于执行交易和其他状态更新的“链下”技术。但是，一个状态通道内发生的事务仍保持了很高的安全性和不可更改性。如果出现任何问题，我们仍然可以回溯到链上交易中确定的稳定版本。
   - 侧链（Sidechain）技术：侧链是平行于主链的一条链，由侧链上的验证者把一条链的最新状态提交给主链上的智能合约，这样持续推进的一类系统。侧链通常使用 PoA(Proof-of-Authority)、PoS(Proof of Stake) 等高效的共识算法。它的优势在于代码和数据与主链独立，不会增加主链的负担，缺陷在于它的安全性弱、不够中心化，无法提供审查抗性、终局性和资金所有权保证。
+  - Plasma技术：也被称为链中链（blockchains in blockchains），是在主链的基础上创建子链，将交易过程放到子链上进行，并定期将交易状态的证明(如Merkle的根哈希)提交到主链。当有恶意行为发生时，子链网络中的所有用户都可以向主链提交防伪证明（Fraud Proof），使含有恶意交易的区块被回滚。项目包括[Plasma MVP](https://ethresear.ch/t/minimal-viable-plasma/426)和[Plasma Clash](https://ethresear.ch/t/plasma-cash-plasma-with-much-less-per-user-data-checking/1298)。缺陷在于不支持通用计算(无法运行智能合约)，等待时间久（需要等待挑战期）。
 
 ### 1.4 L2
 
