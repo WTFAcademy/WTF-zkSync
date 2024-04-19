@@ -564,3 +564,74 @@ export default async function (hre: HardhatRuntimeEnvironment) {
 ![区块链浏览器](./img/deploy.png)
 
 至此整个合约部分完成了，在本教程中，我们学习了如何在 zkSync Era 上设置 paymaster 合约 ， 我们创建了一个 `erc20`，并制定了 `paymaster` 合约，以便它接受该代币的单个单位作为费用。
+
+## 6. 拓展：实际应用中的paymaster
+
+上面的例子中，为了简化，我们假设交易所需的token为1
+```
+uint256 constant PRICE_FOR_PAYING_FEES = 1;
+```
+
+但在实际应用中，项目方需要根据实际的gas费用来计算需要的token数量。接下来我们就以Koi（之前叫Mute）为例，看看paymaster在实际应用中如何计算所需token的数量。
+
+### 6.1 Koi Paymaster 流程
+首先，Koi会在合约里面配置支持的gas token, 其中包含了gas token在Koi的lp地址，以便之后计算兑换汇率。
+
+```solidity
+struct AllowedTokens {
+    // is enabled
+    bool enabled; 
+    //  if we want to price the swap with a mute pool, fill this variable
+    address lpPair;
+    // if we allow a fixed price, set value here (eth:token, e.g. eth:weth = 1e18)
+    uint256 fixedPrice;
+    //refund %
+    uint256 refundVar;
+}
+```
+
+Koi提供了一个helper函数，可以计算出通过Koi自己的池子，需要多少gas token才能兑换成需要的eth数量。
+
+```solidity
+// returns amount of token needed based on mute pool 
+function amountNeeded(uint ethNeeded, address lp) internal view returns(uint) {
+    (uint resIn, uint resOut, ) = IMuteSwitchPairDynamic(lp).getReserves();
+    address _token1 = IMuteSwitchPairDynamic(lp).token1();
+    uint pairFee = IMuteSwitchPairDynamic(lp).pairFee();
+
+    uint _resIn = (_token1 == weth) ? resIn : resOut;
+    uint _resOut =(_token1 == weth) ? resOut : resIn;
+
+    uint numerator = _resIn * (ethNeeded) * (10000);
+    uint denominator = (_resOut - ethNeeded) * (10000 - pairFee);
+    uint amountIn = (numerator / denominator) + 1;
+
+    return amountIn;
+}
+```
+
+当用户请求一笔paymaster交易的时候，paymaster合约会执行以下步骤：
+1) 从配置中确认支持此gas token，并且获取对应的Koi lp地址
+2) 从paymaster参数中，获取交易需要的gas信息，计算出所需的eth数量
+3) 用上面提供的`amountNeeded`函数计算出需要的gas token数量。
+
+```solidity
+// 1) 获取配置
+AllowedTokens memory _tokenSupport = enabledTokens[token];
+
+// 2) 计算交易所需的eth数量
+uint256 requiredETH = _transaction.gasLimit * _transaction.maxFeePerGas;
+
+// 3) 计算对应的gas token数量
+requiredTokens = amountNeeded(requiredETH, _tokenSupport.lpPair);
+
+// 收取requiredTokens作为手续费
+// ...
+ ```
+
+### 6.2 其它
+有兴趣的同学可以直接学习[源代码](https://explorer.zksync.io/address/0x4ae2Ba9A5C653038C6d2F5D9F80B28011A454597#contract)。
+
+比较有意思的一个点是，Koi只会收取所需的gas token数量，但并不会每次自动把token换成eth，应该是考虑到会增加gas cost。
+
+我们可以看到在它的[paymaster地址](https://era.zksync.network/address/0x4ae2Ba9A5C653038C6d2F5D9F80B28011A454597)中，还持有很多收到的gas token。所以在某种程度上说，Koi paymaster每交易一次，都是在间接(超小额)做多gas token / eth的汇率。
