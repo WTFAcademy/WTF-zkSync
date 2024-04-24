@@ -1,5 +1,5 @@
 ---
-title: 6. Contract Testing
+title: 6. Testing
 tags:
    - ethereum
    - layer 2
@@ -10,12 +10,16 @@ tags:
    - hardhat
 ---
 
-# WTF zkSync minimalist introduction: 6. Contract testing
+# WTF zkSync: 6. Testing
 
-This series of tutorials helps developers get started with zkSync development.
-Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy\_](https://twitter.com/WTFAcademy_) Community: [Discord](https://discord.gg/ 5 akcru academy) All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
+This series of tutorials aim to onboard developers to zkSync ecosystem.
+
+Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_)
+
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy) All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
+
 
 When developing a zkSync contract, writing test programs is a key step in verifying the correctness of the contract logic. This tutorial will walk you through how to write tests in zkSync.
 

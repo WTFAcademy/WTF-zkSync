@@ -8,10 +8,15 @@ tags:
    - zksync
 --- 
 
-# WTF zkSync minimalist introduction: 1. Layer 2 basics
+# WTF zkSync: 1. Layer 2 basics
 
-This series of tutorials helps developers get started with zkSync development.
-Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy\_](https://twitter.com/WTFAcademy_) Community: [Discord](https://discord.gg/ 5 akcru academy) All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
+This series of tutorials aim to onboard developers to zkSync ecosystem.
+
+Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_)
+
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy) 
+
+All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
 
@@ -92,7 +97,7 @@ ZK-Rollup is a Layer 2 expansion solution based on zero-knowledge proof. It adop
 - Plausibility: If the assertion is false, then the cheating prover cannot convince the verifier of the assertion. That is: what is false cannot be true.
 - Zero-knowledge: The interaction of the protocol only reveals whether the assertion is correct or not, without revealing any other information.
 
-**What are the applications of zero-knowledge proofs? **
+**What are the applications of zero-knowledge proofs?**
 
 - Substantiate claims regarding private data
    - Prove that someone's account balance is more than 100 million without exposing the account balance. For example, the previous FTX thunderstorm sounded the alarm for users. Exchanges can prove to users that their reserves are sufficient through zero-knowledge proof.
@@ -128,7 +133,7 @@ In Vitalik's blog post, he divides zkEVM into several types. Among them, Type 1 
 
 ![](./img/1-3.png)
 
-**Theoretically, Ethereum does not need to standardize on a single zkEVM implementation for L1; different clients can use different proofs, so we continue to benefit from code redundancy. **— Vitalik Buterin
+**Theoretically, Ethereum does not need to standardize on a single zkEVM implementation for L1; different clients can use different proofs, so we continue to benefit from code redundancy.** — Vitalik Buterin
 
 ![](./img/1-4.png)
 
