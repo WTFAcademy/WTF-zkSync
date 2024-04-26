@@ -16,7 +16,7 @@ Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](http
 
 Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy) 
 
-All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
+All codes and tutorials are open source on Github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
 
@@ -63,7 +63,7 @@ For Ethereum, plans for Ethereum expansion have continued to emerge in the past 
    - Sharding technology: The word Sharding originally comes from the term database, which means dividing a large database into many smaller and more manageable parts, so as to achieve more efficient interaction. Blockchain sharding refers to sharding the blockchain network to increase its scalability. According to the latest Ethereum 2.0 specification, the Ethereum blockchain will be divided into 1024 shard chains, which also means that Ethereum’s TPS will increase by more than 1000 times. However, the current Sharding solution still has shortcomings in cross-shard communication, fraud identification, random allocation and election security.
 - Off-chain expansion:
    - State Channel: refers to "off-chain" technology used to perform transactions and other state updates. However, transactions occurring within a state channel remain highly secure and unchangeable. If any issues arise, we can still fall back to the stable version identified in on-chain transactions.
-   - Sidechain technology: The side chain is a chain parallel to the main chain. The verifier on the side chain submits the latest status of a chain to the smart contract on the main chain. This is a type of system that continues to advance. Side chains usually use efficient consensus algorithms such as PoA (Proof-of-Authority) and PoS (Proof of Stake). Its advantage is that the code and data are independent from the main chain and does not increase the burden on the main chain. Its disadvantage is that its security is weak, not centralized enough, and it cannot provide censorship resistance, finality and fund ownership guarantees.
+   - Sidechain technology: The side chain is a chain parallel to the main chain. The verifier on the side chain submits the latest status of a chain to the smart contract on the main chain. This is a type of system that continues to advance. Side chains usually use efficient consensus algorithms such as PoA (Proof-of-Authority) and PoS (Proof of Stake). Its advantage is that the code and data are independent from the main chain and do not increase the burden on the main chain. Its disadvantage is that its security is weak, not centralized enough, and it cannot provide censorship resistance, finality and fund ownership guarantees.
 
 ### 1.4 L2
 
@@ -120,7 +120,7 @@ ZK-Rollup was criticized in the early days because it was not compatible with EV
 
 Since zkEVM does not have a unified design standard, each project team has designed its own solution based on the trade-off between EVM compatibility and ZK support from different perspectives. Currently, there are basically two ideas:
 
-1. Support at the programming language level, customize EVM opcodes, extract ZK-friendly operations to redesign new virtual machines with different architectures, and compile Soilidity into new virtual machine opcodes through a compiler
+1. Support at the programming language level, customize EVM opcodes, extract ZK-friendly operations to redesign new virtual machines with different architectures, and compile solidity into new virtual machine opcodes through a compiler
 2. Bytecode level support, supporting native EVM opcodes
 
 For the first strategy, since it is not constrained by the original EVM instruction set, the code can be compiled more flexibly into an instruction set that is more friendly to zero-knowledge proofs, and it also gets rid of the difficulty of being compatible with all EVM original instruction sets. And heavy work.

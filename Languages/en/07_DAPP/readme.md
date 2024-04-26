@@ -16,7 +16,9 @@ This series of tutorials aim to onboard developers to zkSync ecosystem.
 
 Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](https://twitter.com/WTFAcademy_)
 
-Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy) All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy) 
+
+All codes and tutorials are open source on Github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
 
@@ -124,7 +126,7 @@ The contracts are all open source and can be found at [https://sepolia.explorer.
 
     The first step for every Dapp application is to connect to the wallet. We will use web3modal + ethers5 to complete this step:
 
-    - First enter `context/web3-modal.tsx` to complete the preliminary construction of web3modal. You can refer to [link](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers). Please note that you need to go to https: //cloud.walletconnect.com registers a projectid
+    - First enter `context/web3-modal.tsx` to complete the preliminary construction of web3modal. You can refer to [link](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers). Please note that you need to go to https: //cloud.walletconnect.com registers a project-id
 
       ```jsx
       "use client";
