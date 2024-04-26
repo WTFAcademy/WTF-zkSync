@@ -124,7 +124,7 @@ The contracts are all open source and can be found at [https://sepolia.explorer.
 
     The first step for every Dapp application is to connect to the wallet. We will use web3modal + ethers5 to complete this step:
 
-    - First enter `context/web3-modal.tsx` to complete the preliminary construction of web3modal. You can refer to [link](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers). Please note that you need to go to https: //cloud.walletconnect.com registers a projectid
+    - First enter `context/web3-modal.tsx` to complete the preliminary construction of web3modal. You can refer to [link](https://docs.walletconnect.com/web3modal/nextjs/about?platform=ethers). Please note that you need to go to https: //cloud.walletconnect.com registers a project-id
 
       ```jsx
       "use client";

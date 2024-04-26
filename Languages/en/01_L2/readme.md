@@ -120,7 +120,7 @@ ZK-Rollup was criticized in the early days because it was not compatible with EV
 
 Since zkEVM does not have a unified design standard, each project team has designed its own solution based on the trade-off between EVM compatibility and ZK support from different perspectives. Currently, there are basically two ideas:
 
-1. Support at the programming language level, customize EVM opcodes, extract ZK-friendly operations to redesign new virtual machines with different architectures, and compile Soilidity into new virtual machine opcodes through a compiler
+1. Support at the programming language level, customize EVM opcodes, extract ZK-friendly operations to redesign new virtual machines with different architectures, and compile solidity into new virtual machine opcodes through a compiler
 2. Bytecode level support, supporting native EVM opcodes
 
 For the first strategy, since it is not constrained by the original EVM instruction set, the code can be compiled more flexibly into an instruction set that is more friendly to zero-knowledge proofs, and it also gets rid of the difficulty of being compatible with all EVM original instruction sets. And heavy work.
