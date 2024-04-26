@@ -16,7 +16,7 @@ Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](http
 
 Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy)
 
- All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
+ All codes and tutorials are open source on Github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
 
@@ -31,7 +31,7 @@ In this lecture, we will introduce `zkSync` contract development and implement a
 
 ## 2. The difference between `ETH` and `zkSync`
 
-zkSync Era can handle the vast majority of Ethereum Virtual Machine (EVM)-based smart contracts and maintains high security standards, reducing the need for repeated security audits. However, there are still some differences, please read the [difference document](https://docs.zksync.io/build/developer-reference/differences-with-ethereum.html) if necessary.
+zkSync Era can handle the vast majority of Ethereum Virtual Machine (EVM)-based smart contracts and maintains high-security standards, reducing the need for repeated security audits. However, there are still some differences, please read the [difference document](https://docs.zksync.io/build/developer-reference/differences-with-ethereum.html) if necessary.
 
 ## 3. Implement a `Paymaster` contract
 
@@ -179,7 +179,7 @@ const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
 });
 ```
 
-Here we verify whether `paymasterInput` supports payment transaction fees, otherwise the entire output will be directly revert. In order to facilitate understanding, the js code for encoding the `ApprovalBased` payment process is posted here.
+Here we verify whether `paymasterInput` supports payment transaction fees, otherwise the entire output will be directly reverted. In order to facilitate understanding, the js code for encoding the `ApprovalBased` payment process is posted here.
 
 ```solidity
 (address token, uint256 amount, bytes memory data) = abi.decode(
@@ -206,7 +206,7 @@ require(
 
 ```
 
-The main thing here is to verify whether the authorized `token` amount is sufficient. In the actual development process, it is actually necessary to deduce the required authorization amount based on the actual gas. For the sake of simplicity, we have written a fixed 1 in the contract. .
+The main thing here is to verify whether the authorized `token` amount is sufficient. In the actual development process, it is actually necessary to deduce the required authorization amount based on the actual gas. For the sake of simplicity, we have written a fixed 1 in the contract.
 
 ```solidity
 uint256 requiredETH = _transaction.gasLimit *
@@ -536,4 +536,4 @@ Example of execution using `paymaster`:
 
 ![Blockchain Browser](./img/deploy.png)
 
-At this point the entire contract part is complete, in this tutorial we learned how to set up the paymaster contract on zkSync Era, we created an `erc20` and formulated the `paymaster` contract so that it accepts single units of the token as cost.
+At this point the entire contract part is complete, in this tutorial, we learned how to set up the paymaster contract on zkSync Era, we created an `erc20` and formulated the `paymaster` contract so that it accepts single units of the token as cost.

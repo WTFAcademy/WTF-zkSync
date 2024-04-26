@@ -13,7 +13,7 @@ Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)｜[@WTFAcademy_](http
 
 Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy) 
 
-All codes and tutorials are open source on github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
+All codes and tutorials are open source on Github: [github.com/WTFAcademy/WTF-zkSync](https://github.com/WTFAcademy/WTF-zkSync)
 
 ---
 
@@ -69,7 +69,7 @@ Each smart contract account follows the official recommendations and implements 
 - `validateTransaction` (required): Confirm whether the transaction logic meets the account rules. If there is an error, it should be rolled back. If it is successful, continue to execute the transaction process.
 - `executeTransaction` (required): called after collecting the handling fee to execute the transaction content
 - `payForTransaction` (optional): If you do not use Paymaster, the normal fee deduction scheme will be used directly (tx.gasprice \* tx.gasLimit)
-- `prepareForPaymaster` (optional): Set the payment scheme, such as: ERC-20 token instead of Gas payment (refer to [Official Case](https://docs.zksync.io/build/tutorials/smart-contract-development /paymasters/custom-paymaster-tutorial.html))
+- `prepareForPaymaster` (optional): Set the payment scheme, such as ERC-20 token instead of Gas payment (refer to [Official Case](https://docs.zksync.io/build/tutorials/smart-contract-development /paymasters/custom-paymaster-tutorial.html))
 - `executeTransactionFromOutside` (optional): This function handles whether to initiate a transaction from outside. It is not mandatory, but it is officially encouraged to do so, because in the case of priority mode (for example, if the Operator does not respond), you can consider starting from EOA The account starts trading.
 
    ```solidity
@@ -125,7 +125,7 @@ Within zkSync's account abstraction framework, `Paymaster` plays a central role,
 `IPaymaster` is the interface contract of Paymaster and mainly contains 2 functions.
 
 1. `validateAndPayForPaymasterTransaction` (required): Called by the bootstrap to verify whether the payer agrees to pay for the transaction. If the payer is willing to pay for the transaction, it must send at least `tx.gasprice * tx.gasLimit` to the Operator. If the verification is successful, the magic value `PAYMASTER_VALIDATION_SUCCESS_MAGIC` and the transaction context `context` (a byte array of up to 1024 bytes in length, will be passed to the `postTransaction` method) are returned.
-2. `postTransaction` (optional): called after the transaction is executed. Note that unlike EIP4337, the zkSync abstract account does not guarantee that this method will be called: if the transaction fails with an out of gas error, this method will not be called. Its parameters are: context `_context`, transaction object `_transaction`, transaction hash `_txHash`, transaction hash `_suggestedSignedHash` signed by EOAs, transaction execution result `_txResult`, and the payer may receive The maximum value of Gas refund `_maxRefundedGas`.
+2. `postTransaction` (optional): called after the transaction is executed. Note that unlike EIP4337, the zkSync abstract account does not guarantee that this method will be called: if the transaction fails with an out-of-gas error, this method will not be called. Its parameters are: context `_context`, transaction object `_transaction`, transaction hash `_txHash`, transaction hash `_suggestedSignedHash` signed by EOAs, transaction execution result `_txResult`, and the payer may receive The maximum value of Gas refund `_maxRefundedGas`.
 
      ```solidity
      contract MyPaymaster is IPaymaster {
