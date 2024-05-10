@@ -335,3 +335,90 @@ import { ethers } from "ethers";
 const provider = Provider.getDefaultProvider(types.Network.Sepolia); // zkSync Era testnet (L2)
 const ethProvider = ethers.getDefaultProvider("sepolia"); // Sepolia testnet (L1)
 ```
+## 7 zkSync Python SDK
+zkSync提供了一套类似web3.py的python解决方案，方便用户使用python在zkSync进行链上交互。
+
+### 7.1 安装
+
+安装前请检查下列需求是否满足：
+
+- Python >= 3.8
+- Pip >= 23.1.2
+- Web3.py >= 6.0.0
+
+之后使用以下命令行通过pip安装zksync2的最新版本
+
+```shell
+pip install zksync2==1.0.0
+```
+
+### 7.2 使用
+
+由于zksync2中大部分操作均与web3相类似，下边仅列出常用的不同点。其他的使用细节请参考[zksync2](https://docs.zksync.io/build/sdks/python/getting-started.html)及[web3](https://web3py.readthedocs.io/en/stable/)的文档
+
+1. 与web3.py略有不同，zksync2需要同时初始化L1和L2两个Network Provider
+
+    ```python
+    ETH_PROVIDER = "https://rpc.ankr.com/eth_sepolia"
+    ZKSYNC_PROVIDER = "https://sepolia.era.zksync.dev"
+
+    # Connect to Ethereum network
+    eth_web3 = Web3(Web3.HTTPProvider(ETH_PROVIDER))
+
+    # Connect to zkSync network
+    zk_web3 = ZkSyncBuilder.build(ZKSYNC_PROVIDER)
+    ```
+
+2. zksync2将部分的钱包操作打包进了Wallet对象，从而使用户无需重头构建交易。Wallet实例可以通过L1和L2的Network Provider和一个由私钥生成的eth-account构成：
+
+    ```python
+    # Get account object by providing from private key
+    account: LocalAccount = Account.from_key(PRIVATE_KEY)
+
+    # Create Ethereum provider
+    wallet = Wallet(zk_web3, eth_web3, account)
+    ```
+
+    以下是一个使用Wallet实例从主网跨链到zksync的代码段
+
+    ```python
+    tx_hash = wallet.deposit(DepositTransaction(token=Token.create_eth().l1_address,
+                                                     amount=Web3.to_wei(amount, "ether"),
+                                                     to=wallet.address))
+    ```
+
+    以下是一个使用Wallet实例转账的代码段
+
+    ```python
+    tx_hash = wallet.transfer(TransferTransaction(
+            to="0x0000000000000000000000000000000000000000",
+            amount=Web3.to_wei(0.001, "ether")))
+    ```
+    
+3. zksync2同时提供了TxCreateContract和TxCreate2Contract两个封装类型以实现[create](https://github.com/WTFAcademy/WTF-Solidity/tree/main/24_Create)和[create2](https://github.com/WTFAcademy/WTF-Solidity/tree/main/25_Create2)两种合约生成方法。不同于web3，zksync2提供了一套专门的封装方法用于读取合约的bytecode和生成初始化函数的calldata。
+
+   下边是一个使用TxCreateContract生成合约的代码段
+   
+   ```python
+   # Get contract ABI and bytecode information
+   incrementer_contract = ContractEncoder.from_json(zk_web3, compiled_contract)[0]
+
+   # Encode the constructor arguments
+   encoded_constructor = incrementer_contract.encode_constructor(**constructor_args)
+
+   # Create deployment contract transaction
+   create_contract = TxCreateContract(
+        web3=zk_web3,
+        chain_id=chain_id,
+        nonce=nonce,
+        from_=account.address,
+        gas_price=gas_price,
+        bytecode=incrementer_contract.bytecode,
+        call_data=encoded_constructor,
+   )
+   ```
+   
+   请注意，发布于zksync的合约不同于主网及其他EVM兼容网络，需要由专门的编译器编译产生。详情请参阅本章的第3，第4节
+
+更多使用zksync2的例子请参考 [zkSync2 Examples](https://github.com/zksync-sdk/zksync2-examples/tree/main/python)
+
