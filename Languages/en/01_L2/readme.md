@@ -32,7 +32,7 @@ L1, the first layer of the network, refers to the underlying blockchain infrastr
 
 Key features and capabilities of L1 networks include:
 
-- **Node Operator Network**: Composed of globally distributed computers or nodes, these nodes are responsible for maintaining and verifying the transactions and status of the network, ensuring the decentralization and security of the network.
+- **Node Operator Network**: The network is composed of globally distributed computers or nodes which are responsible for maintaining and verifying the transactions and status of the network, ensuring the decentralization and security of the network.
 - **Block Producer Network**: Specific nodes (such as miners or validators) are responsible for generating new blocks that contain records of all transactions performed on the network.
 - **The blockchain itself and its transaction data history**: As a growing chain data structure, the blockchain records the history of all transactions and state changes from the creation of the network to the present.
 - **Network Consensus Mechanism**: Defines how nodes in the network reach consensus, verify and confirm transactions, and how to add new blocks to the blockchain. Different L1 networks may use different consensus mechanisms, such as Proof of Work (PoW), Proof of Stake (PoS), etc.
@@ -51,7 +51,7 @@ Similarly, the current blockchain technology also has the "**Impossible Triangle
 
 At present, many blockchains will make trade-offs among the three. For example, Ethereum and Bitcoin are more concerned about decentralization and security. Some new public chains focus more on scalability and security.
 
-Starting with the creation of Bitcoin, all the way to the emergence of the Crypto Kitties game on the Ethereum network. The most criticized aspect of mainstream public chain projects is the low TPS. Ethereum’s current TPS is completely unable to provide real-time and stable support for most applications. This is in sharp contrast to the current Internet industry’s business of tens of thousands of TPS.
+Starting with the creation of Bitcoin, all the way to the emergence of the Crypto Kitties game on the Ethereum network, the most criticized aspect of mainstream public chain projects is the low TPS. Ethereum’s current TPS is completely unable to provide real-time and stable support for most applications. This is in sharp contrast to the current Internet industry’s business of tens of thousands of TPS.
 
 ### 1.3 Expansion plan
 
@@ -63,7 +63,7 @@ For Ethereum, plans for Ethereum expansion have continued to emerge in the past 
    - Sharding technology: The word Sharding originally comes from the term database, which means dividing a large database into many smaller and more manageable parts, so as to achieve more efficient interaction. Blockchain sharding refers to sharding the blockchain network to increase its scalability. According to the latest Ethereum 2.0 specification, the Ethereum blockchain will be divided into 1024 shard chains, which also means that Ethereum’s TPS will increase by more than 1000 times. However, the current Sharding solution still has shortcomings in cross-shard communication, fraud identification, random allocation and election security.
 - Off-chain expansion:
    - State Channel: refers to "off-chain" technology used to perform transactions and other state updates. However, transactions occurring within a state channel remain highly secure and unchangeable. If any issues arise, we can still fall back to the stable version identified in on-chain transactions.
-   - Sidechain technology: The side chain is a chain parallel to the main chain. The verifier on the side chain submits the latest status of a chain to the smart contract on the main chain. This is a type of system that continues to advance. Side chains usually use efficient consensus algorithms such as PoA (Proof-of-Authority) and PoS (Proof of Stake). Its advantage is that the code and data are independent from the main chain and do not increase the burden on the main chain. Its disadvantage is that its security is weak, not centralized enough, and it cannot provide censorship resistance, finality and fund ownership guarantees.
+   - Sidechain technology: The side chain is a chain parallel to the main chain. The verifier on the side chain submits the latest status of a chain to the smart contract on the main chain. This is a type of system that continues to advance. Side chains usually use efficient consensus algorithms such as PoA (Proof-of-Authority) and PoS (Proof of Stake). Its advantage is that the code and data are independent from the main chain and do not increase the burden on the main chain. Its disadvantage is that its security is weak, not de-centralized enough, and it cannot provide censorship resistance, finality and fund ownership guarantees.
 
 ### 1.4 L2
 
@@ -83,7 +83,7 @@ Optimistic Rollup (optimistic Rollup protocol) adopts a fraud proof method, that
 
 2.ZK-Rollup
 
-ZK-Rollup is a Layer 2 expansion solution based on zero-knowledge proof. It adopts the validity verification method (VP). By default, all transactions are dishonest and will only be accepted if they pass validity verification. ZK-Rollup performs complex calculations and proof generation off-chain, and performs proof verification and stores part of the data on-chain to ensure data availability. Current mainstream solutions include zkSync, StarkNet, Scroll, Polygon Hermez, etc.
+ZK-Rollup is a Layer 2 expansion solution based on zero-knowledge proof. It adopts the validity verification method (VP). By default, all transactions are presumed to be dishonest and will only be accepted if they pass validity verification. ZK-Rollup performs complex calculations and proof generation off-chain, and performs proof verification and stores part of the data on-chain to ensure data availability. Current mainstream solutions include zkSync, StarkNet, Scroll, Polygon Hermez, etc.
 
 **In the mid to long term, as ZK-SNARK technology improves, ZK rollups will win in all use cases. **— Vitalik Buterin
 
@@ -133,7 +133,7 @@ In Vitalik's blog post, he divides zkEVM into several types. Among them, Type 1 
 
 ![](./img/1-3.png)
 
-**Theoretically, Ethereum does not need to standardize on a single zkEVM implementation for L1; different clients can use different proofs, so we continue to benefit from code redundancy.** — Vitalik Buterin
+**Theoretically, there is no need for Ethereum to standardize on a single ZK-EVM implementation for L1 use; different clients could use different proofs, so we continue to benefit from code redundancy.** — Vitalik Buterin
 
 ![](./img/1-4.png)
 

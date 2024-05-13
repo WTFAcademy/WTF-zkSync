@@ -110,7 +110,7 @@ Each smart contract account follows the official recommendations and implements 
 
    ```
 
-   ### 2.3 Paymaster: payment relay in zkSync
+### 2.3 Paymaster: payment relay in zkSync
 
 Within zkSync's account abstraction framework, `Paymaster` plays a central role, allowing transaction initiators to pay transaction fees through a third party, or pay fees using non-native tokens such as ERC-20 tokens.
 

@@ -119,7 +119,7 @@ zkSync supports wallets on the Ethereum network, such as MetaMask. You just need
 
 ![](./img/2-4.png)
 
-You can use [zkSync official cross-chain bridge](https://portal.zksync.io/bridge/) or [third-party cross-chain bridge](https://zksync.io/explore#bridges) to transfer assets (ETH or ERC20) Deposit from Ethereum mainnet to zkSync mainnet, or withdraw from zkSync to L1.
+You can use [zkSync official cross-chain bridge](https://portal.zksync.io/bridge/) or [third-party cross-chain bridge](https://zksync.io/explore#bridges) to transfer assets (ETH or ERC20) like depositing from Ethereum mainnet to zkSync mainnet, or withdrawing from zkSync to L1.
 
 Deposits from Ethereum mainnet to zkSync take approximately 15 minutes, while withdrawals from zkSync to Ethereum can take up to 24 hours.
 
