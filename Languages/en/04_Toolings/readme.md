@@ -40,7 +40,7 @@ In this lecture, we will introduce the zkSync ecosystem and some commonly used t
 
 [zkSync CLI](https://github.com/matter-labs/zksync-cli) is a command line tool used to simplify zkSync development and interaction. It provides commands for functions such as managing the local development environment, interacting with contracts, managing tokens, etc. It contains the following commands and corresponding functions:
 
-#### 3.1dev
+#### 3.1 dev
 
 Used to manage local development environments
 
