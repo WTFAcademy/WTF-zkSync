@@ -1,11 +1,11 @@
 import { Icons } from "@/components/icons";
 import { truncate } from "@/lib/utils";
-import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers5/react";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { useEffect } from "react";
 
 const StepConnectWallet = ({ next }: { next: () => void }) => {
-    const { open } = useWeb3Modal();
-    const { address, isConnected } = useWeb3ModalAccount();
+    const { open } = useAppKit();
+    const { address, isConnected } = useAppKitAccount();
 
     const handleClick = () => {
         open().catch(console.error);

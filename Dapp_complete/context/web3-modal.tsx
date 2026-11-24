@@ -1,34 +1,27 @@
-'use client'
+"use client";
+import { createAppKit } from "@reown/appkit/react";
+import { zkSyncSepoliaTestnet } from "@reown/appkit/networks";
+import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 
-import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react'
-
-// 1. Get projectId at https://cloud.walletconnect.com
-const projectId = 'f37e1ba95e3fc6f993defe54cf55c59f'
-
-// 2. Set chains
-export const zkSyncSepoliaTestnet = {
-    chainId: 300,
-    name: "zkSync Sepolia Testnet",
-    currency: "ETH",
-    explorerUrl: "https://sepolia.explorerzksync.io/",
-    rpcUrl: "https://sepolia.era.zksync.dev",
+export const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID;
+if (projectId) {
+    createAppKit({
+        adapters: [new EthersAdapter()],
+        networks: [zkSyncSepoliaTestnet],
+        defaultNetwork: zkSyncSepoliaTestnet,
+        metadata: { name: "WTF zkSync", description: "zkSync Sepolia tutorial", url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000", icons: [] },
+        projectId,
+        features: { analytics: false, email: false, socials: false },
+    });
 }
-
-// 3. Create modal
-const metadata = {
-    name: 'Web3Modal',
-    description: 'Web3Modal ZkSync Example',
-    url: 'https://web3modal.com', // origin must match your domain & subdomain
-    icons: ['https://avatars.githubusercontent.com/u/37784886']
-}
-
-export const {getWalletProvider} = createWeb3Modal({
-    ethersConfig: defaultConfig({ metadata }),
-    chains: [zkSyncSepoliaTestnet],
-    projectId,
-    enableAnalytics: true // Optional - defaults to your Cloud configuration
-})
 
 export function Web3ModalProvider({ children }: { children: React.ReactNode }) {
-    return children
+    if (!projectId) {
+        return (
+            <main className="mx-auto max-w-xl p-6">
+                Set <code>NEXT_PUBLIC_REOWN_PROJECT_ID</code> and restart the app to connect a wallet.
+            </main>
+        );
+    }
+    return <>{children}</>;
 }

@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import Checkout from "./checkout";
 import useNft from "@/hooks/use-nft";
 import useToken from "@/hooks/use-token";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const MintNFTModal = () => {
     const [openModal, setOpenModal] = useState<boolean>(false);
@@ -16,7 +16,7 @@ const MintNFTModal = () => {
     const { canNonGas } = useToken();
 
     const { data: nftMintEstimate, isLoading: isTokenMintEstimateLoading } =
-        useQuery("nftMintEstimate", getNFTMintEstimate, {
+        useQuery({queryKey: ["nftMintEstimate"], queryFn: getNFTMintEstimate,
             enabled: openModal,
         });
 

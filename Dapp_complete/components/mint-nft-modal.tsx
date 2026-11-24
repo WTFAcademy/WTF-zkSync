@@ -2,7 +2,7 @@
 
 import { NFT_ADDRESS } from "@/constants/contract";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import Checkout from "./checkout";
@@ -23,7 +23,7 @@ const MintNFTModal = () => {
     const {
         data: nftMintEstimate,
         isLoading: isTokenMintEstimateLoading
-    } = useQuery("nftMintEstimate", getNFTMintEstimate, {
+    } = useQuery({queryKey: ["nftMintEstimate"], queryFn: getNFTMintEstimate,
         enabled: openModal
     })
 

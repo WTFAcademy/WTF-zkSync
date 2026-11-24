@@ -1,119 +1,64 @@
 import { PAYMASTER_ADDRESS, TOKEN_ABI, TOKEN_ADDRESS } from "@/constants/contract";
-import { useWeb3ModalAccount, useWeb3ModalProvider } from "@web3modal/ethers5/react";
-import { Contract, Web3Provider } from "zksync-ethers"
-import { ethers } from "ethers";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Contract } from "zksync-ethers";
+import { formatEther, parseEther } from "ethers";
 import { toast } from "sonner";
 import usePaymaster from "./use-paymaster";
-import { useMemo } from "react";
+import useZkSyncWallet from "./use-zksync-wallet";
 
+const minimum = parseEther("1");
 
-const useToken = () => {
-    const { isConnected, address } = useWeb3ModalAccount()
-    const { walletProvider } = useWeb3ModalProvider()
-
+export default function useToken() {
+    const { address, provider, isReady, getSigner, estimateCost } = useZkSyncWallet();
     const { customData } = usePaymaster();
+    const { data: balance, refetch: refetchToken } = useQuery({
+        queryKey: ["token", address], enabled: isReady,
+        queryFn: async (): Promise<bigint> => new Contract(TOKEN_ADDRESS, TOKEN_ABI, provider).balanceOf(address),
+    });
+    const { data: allowance, refetch: refetchAllowance } = useQuery({
+        queryKey: ["tokenAllowance", address], enabled: isReady,
+        queryFn: async (): Promise<bigint> => new Contract(TOKEN_ADDRESS, TOKEN_ABI, provider).allowance(address, PAYMASTER_ADDRESS),
+    });
+    const canNonGas = (balance ?? BigInt(0)) >= minimum;
 
-    const contract = useMemo(() => {
-        if (!isConnected) return null;
-
-        const ethersProvider = new Web3Provider(walletProvider!)
-        const signer = ethersProvider.getSigner();
-        return new Contract(TOKEN_ADDRESS, TOKEN_ABI, signer);
-    }, [isConnected, address])
-
-    const getTokenMintEstimate = async () => {
-        const ethersProvider = new Web3Provider(walletProvider!)
-        const erc20Contract = contract!;
-        const gasEstimate = await erc20Contract.estimateGas.mint(address, ethers.utils.parseEther("1000"));
-        const gasPrice = await ethersProvider.getGasPrice();
-        const cost = gasPrice.mul(gasEstimate);
-
-        return {
-            gas: ethers.utils.formatEther(gasEstimate).toString(),
-            gasPrice: ethers.utils.formatEther(gasPrice).toString(),
-            cost: ethers.utils.formatEther(cost).toString()
-        }
+    async function getTokenMintEstimate() {
+        const contract = new Contract(TOKEN_ADDRESS, TOKEN_ABI, await getSigner());
+        const result = await estimateCost(await contract.mint.estimateGas(address, parseEther("1000")));
+        return { gas: result.gas.toString(), gasPrice: formatEther(result.gasPrice), cost: formatEther(result.cost) };
     }
 
-    const { data: tokenBalance, refetch: refetchToken } = useQuery(
-        ["token", address],
-        async () => {
-            const erc20Contract = contract!;
-            const balance = await erc20Contract.balanceOf(address);
-            return ethers.utils.formatEther(balance).toString();
-        },
-        {
-            enabled: isConnected,
-            refetchInterval: 0
-        }
-    )
-
-    const {data: allowance, refetch: refetchAllowance} = useQuery(["tokenAllowance", address], async () => {
-        const erc20Contract = contract!;
-        const allowance = await erc20Contract.allowance(address, customData.paymasterParams.paymaster);
-        return allowance;
-    }, {
-        enabled: isConnected,
-        refetchInterval: 0
-    })
-
-    const canNonGas = !!tokenBalance && ethers.utils.parseEther(tokenBalance).gte(ethers.utils.parseEther("1"));
-
-    const { data: mintTx, isLoading: isMintLoading, mutateAsync: mint } = useMutation(
-        ["mint", address],
-        async () => {
-            const erc20Contract = contract!;
-            const tx = await erc20Contract.mint(address, ethers.utils.parseEther("1000"), {
-                customData: canNonGas ? customData : undefined
-            });
+    const mint = useMutation({
+        mutationFn: async () => {
+            const contract = new Contract(TOKEN_ADDRESS, TOKEN_ABI, await getSigner());
+            const tx = await contract.mint(address, parseEther("1000"), { customData: canNonGas ? customData : undefined });
             await tx.wait();
             return tx;
         },
-        {
-            onSuccess: () => {
-                refetchToken();
-                toast.success("mint 1000 token success");
-            },
-            onError: (error: any) => {
-                console.log(error);
-                toast.error(error.data.message);
-            }
-        }
-    )
-
-    const { 
-        data: approvePaymasterTx, 
-        isLoading: isApprovePaymasterLoading, 
-        mutateAsync: approvePaymaster
-    } = useMutation("approve", async () => {
-        const erc20Contract = contract!;
-        const tx = await erc20Contract.approve(
-            PAYMASTER_ADDRESS,
-            ethers.constants.MaxUint256
-        );
-        await tx.wait();
-        return tx;
-    }, {
-        onSuccess: () => {
-            toast.success("approve paymaster success");
-            refetchAllowance();
-        }
-    })
+        onSuccess: () => { refetchToken(); toast.success("Tokens minted"); },
+        onError: (error) => toast.error(error.message),
+    });
+    const approve = useMutation({
+        mutationFn: async () => {
+            const contract = new Contract(TOKEN_ADDRESS, TOKEN_ABI, await getSigner());
+            const tx = await contract.approve(PAYMASTER_ADDRESS, minimum);
+            await tx.wait();
+            return tx;
+        },
+        onSuccess: () => { refetchAllowance(); toast.success("Paymaster approved"); },
+        onError: (error) => toast.error(error.message),
+    });
 
     return {
-        tokenBalance,
+        tokenBalance: balance === undefined ? undefined : formatEther(balance),
         refetchToken,
-        mint,
-        mintTx,
-        isMintLoading,
+        mint: mint.mutateAsync,
+        mintTx: mint.data,
+        isMintLoading: mint.isPending,
         getTokenMintEstimate,
-        isAllowancePaymaster: allowance?.gte(ethers.utils.parseEther("1")),
-        approvePaymaster,
-        isApprovePaymasterLoading,
-        approvePaymasterTx,
-        canNonGas
-    }
+        isAllowancePaymaster: (allowance ?? BigInt(0)) >= minimum,
+        approvePaymaster: approve.mutateAsync,
+        isApprovePaymasterLoading: approve.isPending,
+        approvePaymasterTx: approve.data,
+        canNonGas,
+    };
 }
-
-export default useToken;

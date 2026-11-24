@@ -1,80 +1,36 @@
 import { NFT_ABI, NFT_ADDRESS } from "@/constants/contract";
-import { useWeb3ModalAccount, useWeb3ModalProvider } from "@web3modal/ethers5/react";
-import { useMemo } from "react";
-import { useMutation, useQuery } from "react-query";
-import { Contract, Web3Provider } from "zksync-ethers";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { formatEther } from "ethers";
+import { Contract } from "zksync-ethers";
+import { toast } from "sonner";
 import useToken from "./use-token";
 import usePaymaster from "./use-paymaster";
-import { ethers } from "ethers";
-import { toast } from "sonner";
+import useZkSyncWallet from "./use-zksync-wallet";
 
-
-const useNft = () => {
-    const { isConnected, address } = useWeb3ModalAccount()
-    const { walletProvider } = useWeb3ModalProvider()
-
+export default function useNft() {
+    const { isReady, address, provider, getSigner, estimateCost } = useZkSyncWallet();
     const { canNonGas } = useToken();
     const { customData } = usePaymaster();
+    const { data: nftBalance, refetch } = useQuery({
+        queryKey: ["nftBalance", address], enabled: isReady,
+        queryFn: async () => (await new Contract(NFT_ADDRESS, NFT_ABI, provider).balanceOf(address)).toString(),
+    });
 
-    const contract = useMemo(() => {
-        if (!isConnected) return null;
-
-        const ethersProvider = new Web3Provider(walletProvider!)
-        const signer = ethersProvider.getSigner();
-        return new Contract(NFT_ADDRESS, NFT_ABI, signer);
-    }, [isConnected, address])
-
-    const getNFTMintEstimate = async () => {
-        const ethersProvider = new Web3Provider(walletProvider!)
-        const nftContract = contract!;
-        const gasEstimate = await nftContract.estimateGas.mint(address, "Space Stone");
-        const gasPrice = await ethersProvider.getGasPrice();
-        const cost = gasPrice.mul(gasEstimate);
-
-        return {
-            gas: ethers.utils.formatEther(gasEstimate).toString(),
-            gasPrice: ethers.utils.formatEther(gasPrice).toString(),
-            cost: ethers.utils.formatEther(cost).toString()
-        }
+    async function getNFTMintEstimate() {
+        const contract = new Contract(NFT_ADDRESS, NFT_ABI, await getSigner());
+        const result = await estimateCost(await contract.mint.estimateGas(address, "Space Stone"));
+        return { gas: result.gas.toString(), gasPrice: formatEther(result.gasPrice), cost: formatEther(result.cost) };
     }
 
-    const { data: nftBalance, refetch } = useQuery(["nftBalance", address], async () => {
-        if (!contract) return null;
-        const balance = await contract.balanceOf(address);
-        return balance.toString();
-    }, {
-        enabled: isConnected,
-        refetchInterval: 0
-    })
-
-    const {
-        data: mintTx,
-        isLoading: isMintLoading,
-        mutateAsync: mint
-    } = useMutation(["mintNft", address], async () => {
-        if (!contract) return null;
-        const tx = await contract.mint(address, "Space Stone", {
-            customData: canNonGas ? customData : undefined
-        });
-        await tx.wait();
-        return tx;
-    }, {
-        onSuccess: () => {
-            toast.success("NFT minted successfully");
-            refetch();
+    const mint = useMutation({
+        mutationFn: async () => {
+            const contract = new Contract(NFT_ADDRESS, NFT_ABI, await getSigner());
+            const tx = await contract.mint(address, "Space Stone", { customData: canNonGas ? customData : undefined });
+            await tx.wait();
+            return tx;
         },
-        onError: (err: any) => {
-            toast.error(err.message);
-        }
-    })
-
-    return {
-        nftBalance,
-        mintTx,
-        isMintLoading,
-        mint,
-        getNFTMintEstimate
-    }
+        onSuccess: () => { refetch(); toast.success("NFT minted"); },
+        onError: (error) => toast.error(error.message),
+    });
+    return { nftBalance, mintTx: mint.data, isMintLoading: mint.isPending, mint: mint.mutateAsync, getNFTMintEstimate };
 }
-
-export default useNft;
