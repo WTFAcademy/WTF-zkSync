@@ -48,8 +48,8 @@ In this tutorial we will complete:
 
     ```jsx
     git clone https://github.com/WTFAcademy/WTF-zkSync.git
-    cd WTF-zkSync/07_DAPP/template
-    pnpm i/yarn/npm install
+    cd WTF-zkSync/Languages/en/Dapp_template
+    yarn install --frozen-lockfile
     ```
 
 2. Directory structure:
@@ -315,12 +315,14 @@ The contracts are all open source and can be found at [https://sepolia.explorer.
                 }
             )
 
+            const canNonGas = !!tokenBalance && ethers.utils.parseEther(tokenBalance).gte(ethers.utils.parseEther("1"));
+
             const { data: mintTx, isLoading: isMintLoading, mutateAsync: mint } = useMutation(
                 ["mint", address],
                 async () => {
                     const erc20Contract = contract!;
                     const tx = await erc20Contract.mint(address, ethers.utils.parseEther("1000"), {
-                        customData: ethers.utils.parseEther(tokenBalance!) > ethers.utils.parseEther("1") ? customData : undefined
+                        customData: canNonGas ? customData : undefined
                     });
                     await tx.wait();
                     returntx;
@@ -408,7 +410,7 @@ The contracts are all open source and can be found at [https://sepolia.explorer.
         return {
         //...
         getTokenMintEstimate,
-        canNonGas: tokenBalance ? ethers.utils.parseEther(tokenBalance!) > ethers.utils.parseEther("1") : false
+        canNonGas
         }
       ```
 

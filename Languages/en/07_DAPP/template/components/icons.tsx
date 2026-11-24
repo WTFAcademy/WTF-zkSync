@@ -1,4 +1,4 @@
-import { TIconProps } from "@/types/icon";
+import { TIconProps } from "@/types/icons";
 
 export const Icons = {
   wallet: (props: TIconProps) => (
