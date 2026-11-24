@@ -48,7 +48,7 @@ tags:
    ```jsx
    git clone https://github.com/WTFAcademy/WTF-zkSync.git
    cd WTF-zkSync/Dapp_template
-   pnpm install // 或 yarn install 或 npm install
+   yarn install --frozen-lockfile
    ```
 
 2. 目录结构：
@@ -334,12 +334,14 @@ tags:
                }
            )
 
+           const canNonGas = !!tokenBalance && ethers.utils.parseEther(tokenBalance).gte(ethers.utils.parseEther("1"));
+
            const { data: mintTx, isLoading: isMintLoading, mutateAsync: mint } = useMutation(
                ["mint", address],
                async () => {
                    const erc20Contract = contract!;
                    const tx = await erc20Contract.mint(address, ethers.utils.parseEther("1000"), {
-                       customData: ethers.utils.parseEther(tokenBalance!) > ethers.utils.parseEther("1") ? customData : undefined
+                       customData: canNonGas ? customData : undefined
                    });
                    await tx.wait();
                    return tx;
@@ -431,7 +433,7 @@ tags:
         return {
           //...
           getTokenMintEstimate,
-          canNonGas: tokenBalance ? ethers.utils.parseEther(tokenBalance!) > ethers.utils.parseEther("1") : false
+          canNonGas
         }
        ```
 
@@ -728,7 +730,7 @@ tags:
      ```
 
 5. 此时我们已完成了前端开发，我们可以去页面中开始尝试 paymaster 的神奇吧！体验无 Gas 铸造 NFT 的过程。
-   1. 使用`pnpm dev | yarn dev | npm run dev`导航到  `http://localhost:3000`  并刷新页面。单击“连接钱包”链接您的 MetaMask 帐户。确保你持有 zksync Sepolia 测试网 ETH
+   1. 运行 `yarn dev`，然后打开  `http://localhost:3000`  并刷新页面。单击“连接钱包”链接您的 MetaMask 帐户。确保你持有 zksync Sepolia 测试网 ETH
    2. 查看 paymaster 余额，如果不够可以捐赠一些以满足正常是的运转
    3. 铸造 Token 用于 NFT 铸造的支付
    4. 开始 NFT 铸造，可以看到右侧一个签名，完成后即可满足最终的交易执行成功
