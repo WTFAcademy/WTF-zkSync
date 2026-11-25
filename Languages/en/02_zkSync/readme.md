@@ -123,7 +123,7 @@ You can use [zkSync official cross-chain bridge](https://portal.zksync.io/bridge
 
 Deposits from Ethereum mainnet to zkSync take approximately 15 minutes, while withdrawals from zkSync to Ethereum can take up to 24 hours.
 
-Developers can also use zkSync's cross-chain bridge contracts in L1 and L2 to build custom cross-chain bridges, [Document](https://docs.zksync.io/build/developer-reference/bridging-asset.html#withdrawals -to-l1).
+Developers can also use zkSync's cross-chain bridge contracts in L1 and L2 to build custom cross-chain bridges, [Document](https://docs.zksync.io/build/developer-reference/bridging-asset.html#withdrawals-to-l1).
 
 ## 5. Block explorer
 
@@ -168,7 +168,7 @@ Developers can use Solidity or Vyper to develop smart contracts on zkSync, and m
 
 - Use upgradable contracts: The zkSync Era is still in the early stages of development, and although the team has conducted extensive testing to ensure EVM compatibility, issues may still arise. Therefore, when deploying contracts, you should try to use upgradable proxy contracts to deal with possible problems. If you don’t understand proxy contracts/upgradeable contracts, you can refer to the WTF Solidity tutorial [Lecture 48](https://github.com/AmazingAng/WTF-Solidity/blob/main/48_TransparentProxy/readme.md) and [Lecture 49 ](https://github.com/AmazingAng/WTF-Solidity/blob/main/49_UUPS/readme.md).
 
-- Do not rely on EVM's gas logic: zkSync has its own set of gas logic, which is different from L1. For example, it will consider the gas consumption when data is published in L1. For details, please refer to [Document](https://docs.zksync.io/zk -stack/concepts/fee-mechanism.html).
+- Do not rely on EVM's gas logic: zkSync has its own set of gas logic, which is different from L1. For example, it will consider the gas consumption when data is published in L1. For details, please refer to [Document](https://docs.zksync.io/zk-stack/concepts/fee-mechanism.html).
 
 ## 9. Summary
 
