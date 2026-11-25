@@ -525,7 +525,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
 
    console.log(`Paymaster ETH balance is now ${paymasterBalance.toString()}`);
    console.log(
-     `ERC20 token balance of the the wallet after mint: ${await wallet.getBalance(
+     `ERC20 token balance of the wallet after mint: ${await wallet.getBalance(
        TOKEN_ADDRESS,
      )}`,
    );
